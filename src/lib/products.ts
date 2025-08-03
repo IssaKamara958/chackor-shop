@@ -1,3 +1,4 @@
+
 import type { Product } from './types';
 
 export const products: Product[] = [
@@ -51,7 +52,7 @@ export const products: Product[] = [
     name: 'Pack de 12 (250g)',
     description: 'Un pack économique de 12 sachets de 250g pour ne jamais en manquer.',
     price: 27600,
-    image: '/images/products/pack_250g.jpg',
+    image: '/images/products/250g (2).jpg',
     slug: 'pack-de-12-250g',
     category: 'Café Touba',
   },
@@ -60,7 +61,7 @@ export const products: Product[] = [
     name: 'Pack de 12 (125g)',
     description: 'Un pack économique de 12 sachets de 125g, pratique et malin.',
     price: 13800,
-    image: '/images/products/pack_125g.jpg',
+    image: '/images/products/125g.jpg',
     slug: 'pack-de-12-125g',
     category: 'Café Touba',
   },
@@ -69,7 +70,7 @@ export const products: Product[] = [
     name: 'Pack de 12 (75g)',
     description: 'Un pack économique de 12 sachets de 75g pour les petites faims.',
     price: 7800,
-    image: '/images/products/pack_75g.jpg',
+    image: '/images/products/75g.jpg',
     slug: 'pack-de-12-75g',
     category: 'Café Touba',
   },
