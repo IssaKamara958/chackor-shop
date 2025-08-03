@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Coffee } from 'lucide-react';
+import Image from 'next/image';
+import { Menu } from 'lucide-react';
 import { CartIcon } from './CartIcon';
 
 export function Navbar() {
@@ -14,7 +15,13 @@ export function Navbar() {
     <header className="bg-card shadow-sm sticky top-0 z-40">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg font-headline">
-          <Coffee className="h-6 w-6 text-primary" />
+           <Image
+              src="/images/logo/ch-logo.jpg"
+              alt="Chackor Shop Logo"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
           <span>Chackor Shop</span>
         </Link>
 
@@ -39,7 +46,13 @@ export function Navbar() {
               <SheetContent side="left">
                 <div className="flex flex-col gap-6 p-6">
                   <Link href="/" className="flex items-center gap-2 font-bold text-lg font-headline">
-                    <Coffee className="h-6 w-6 text-primary" />
+                    <Image
+                      src="/images/logo/ch-logo.jpg"
+                      alt="Chackor Shop Logo"
+                      width={40}
+                      height={40}
+                       className="rounded-full"
+                    />
                     <span>Chackor Shop</span>
                   </Link>
                   <nav className="flex flex-col gap-4">

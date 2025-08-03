@@ -36,7 +36,7 @@ export function EventServiceOrder() {
       name: `Service Événementiel: ${eventType}`,
       description: `Service café pour ${quantity} unité(s).`,
       price: totalPrice / quantity, // Price per unit
-      image: 'https://placehold.co/400x400.png',
+      image: '/images/services/event-service.png',
       slug: 'service-evenementiel',
       category: 'Service Événementiel',
     };
