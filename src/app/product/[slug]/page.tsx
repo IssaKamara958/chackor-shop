@@ -23,6 +23,7 @@ export async function generateMetadata(
   if (!product) {
     return {
       title: "Produit non trouvé",
+      description: "Ce produit n'existe pas ou plus dans notre catalogue.",
     }
   }
 
@@ -30,9 +31,9 @@ export async function generateMetadata(
 
   return {
     title: product.name,
-    description: product.description,
+    description: `Achetez ${product.name}. ${product.description} Disponible maintenant sur Chackor Shop.`,
     openGraph: {
-      title: product.name,
+      title: `${product.name} | Chackor Shop`,
       description: product.description,
       images: [
         {
@@ -43,6 +44,14 @@ export async function generateMetadata(
         },
         ...previousImages,
       ],
+      type: 'article',
+      url: `/product/${product.slug}`,
+    },
+     twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} | Chackor Shop`,
+      description: product.description,
+      images: [product.image],
     },
   }
 }
@@ -60,7 +69,36 @@ export default function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": `https://chackor-shop.com${product.image}`,
+    "description": product.description,
+    "sku": product.id,
+    "brand": {
+      "@type": "Brand",
+      "name": "Chackor Shop"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://chackor-shop.com/product/${product.slug}`,
+      "priceCurrency": "XOF",
+      "price": product.price,
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Chackor Shop"
+      }
+    }
+  };
+
   return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
       <Card className="overflow-hidden">
         <div className="aspect-square relative">
@@ -101,5 +139,6 @@ export default function ProductPage({ params }: ProductPageProps) {
         </Card>
       </div>
     </div>
+    </>
   );
 }

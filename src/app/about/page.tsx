@@ -4,7 +4,12 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "À Propos de Chackor Organisation",
-  description: "Découvrez la mission et la vision de Chackor Organisation, une initiative communautaire à Thiès, Sénégal, et ses pôles d'activités : Café Touba, services digitaux, et plus.",
+  description: "Découvrez la mission, la vision et les services de Chackor Organisation, une initiative communautaire à Thiès, Sénégal, et ses pôles d'activités : Café Touba, services digitaux, et plus.",
+  openGraph: {
+    title: 'À Propos de Chackor Organisation | Chackor Shop',
+    description: 'Tout savoir sur Chackor Organisation, notre mission et nos services.',
+    url: '/about',
+  },
 };
 
 export default function AboutPage() {

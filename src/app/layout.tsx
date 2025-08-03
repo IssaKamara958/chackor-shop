@@ -4,6 +4,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { CartProvider } from '@/context/CartProvider';
 import { Toaster } from '@/components/ui/toaster';
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chackor-shop.com'), // Replace with your actual domain
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     default: 'Chackor Shop - Café Touba Artisanal et Services',
   },
   description: 'Découvrez le Café Touba authentique de Chackor Organisation. Vente en ligne, services événementiels, et plus encore. Basé à Thiès, Sénégal.',
-  keywords: ['Café Touba', 'Chackor Shop', 'Thiès', 'Sénégal', 'café artisanal', 'services événementiels'],
+  keywords: ['Café Touba', 'Chackor Shop', 'Thiès', 'Sénégal', 'café artisanal', 'services événementiels', 'Achakourou'],
   openGraph: {
     title: 'Chackor Shop - Café Touba Artisanal et Services',
     description: 'La boutique officielle pour le café Touba de Chackor et les services associés.',
@@ -49,7 +50,9 @@ export const metadata: Metadata = {
   icons: {
     icon: '/images/logo/favicon.ico',
     apple: '/images/logo/apple-touch-icon.png',
-  }
+  },
+  manifest: '/manifest.json',
+  themeColor: '#8C6E4D',
 };
 
 export default function RootLayout({
@@ -58,11 +61,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Chackor Shop",
+              "url": "https://chackor-shop.com",
+              "logo": "https://chackor-shop.com/images/logo/ch-logo.jpg",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+221-77-682-84-41",
+                "contactType": "Customer Service",
+                "areaServed": "SN",
+                "availableLanguage": ["French"]
+              },
+              "sameAs": [
+                // Add social media links here when available
+              ]
+            }) }}
+          />
       </head>
       <body className="font-body antialiased">
         <CartProvider>
@@ -75,6 +98,7 @@ export default function RootLayout({
           </div>
           <Toaster />
         </CartProvider>
+        <Analytics />
       </body>
     </html>
   );
