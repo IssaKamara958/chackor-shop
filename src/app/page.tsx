@@ -3,6 +3,12 @@ import { ProductList } from '@/components/home/ProductList';
 import { EventServiceOrder } from '@/components/home/EventServiceOrder';
 import { products } from '@/lib/products';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Accueil | Chackor Shop - Café Touba et Services',
+  description: 'Bienvenue sur Chackor Shop. Achetez notre café Touba artisanal et découvrez nos services événementiels pour toutes vos occasions à Thiès et au Sénégal.',
+};
 
 export default function Home() {
   const cafeProducts = products.filter(p => p.category === 'Café Touba');

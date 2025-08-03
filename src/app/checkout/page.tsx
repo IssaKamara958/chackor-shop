@@ -1,4 +1,14 @@
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Paiement de votre commande",
+  description: "Finalisez votre commande sur Chackor Shop en remplissant vos informations de livraison et de paiement.",
+  robots: {
+    index: false,
+    follow: false,
+  }
+};
 
 export default function CheckoutPage() {
     return (

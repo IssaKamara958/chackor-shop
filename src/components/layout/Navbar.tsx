@@ -21,6 +21,7 @@ export function Navbar() {
               width={40}
               height={40}
               className="rounded-full"
+              priority
             />
           <span>Chackor Shop</span>
         </Link>

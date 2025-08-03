@@ -15,7 +15,7 @@ export const products: Product[] = [
     name: 'Café Touba - 500g',
     description: 'Un demi-kilo de pur plaisir, parfait pour une consommation régulière.',
     price: 3250,
-    image: '/images/products/500g.png',
+    image: '/images/products/500g.jpg',
     slug: 'cafe-touba-500g',
     category: 'Café Touba',
   },

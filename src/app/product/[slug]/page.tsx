@@ -1,17 +1,51 @@
 import { products } from "@/lib/products";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { AddToCartButton } from "@/components/products/AddToCartButton";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { Metadata, ResolvingMetadata } from 'next'
 
 type ProductPageProps = {
   params: {
     slug: string;
   };
 };
+
+export async function generateMetadata(
+  { params }: ProductPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const product = products.find((p) => p.slug === params.slug);
+
+  if (!product) {
+    return {
+      title: "Produit non trouvé",
+    }
+  }
+
+  const previousImages = (await parent).openGraph?.images || []
+
+  return {
+    title: product.name,
+    description: product.description,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: [
+        {
+          url: product.image,
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+        ...previousImages,
+      ],
+    },
+  }
+}
 
 export function generateStaticParams() {
   return products.map((product) => ({
@@ -36,6 +70,8 @@ export default function ProductPage({ params }: ProductPageProps) {
             fill
             className="object-cover"
             data-ai-hint="coffee bag"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
           />
         </div>
       </Card>

@@ -1,4 +1,14 @@
 import { CartView } from "@/components/cart/CartView";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Votre Panier",
+  description: "Consultez les articles dans votre panier, ajustez les quantités et préparez-vous à finaliser votre commande sur Chackor Shop.",
+  robots: {
+    index: false,
+    follow: false,
+  }
+};
 
 export default function CartPage() {
   return (

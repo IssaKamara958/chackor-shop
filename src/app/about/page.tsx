@@ -1,5 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Phone, User } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "À Propos de Chackor Organisation",
+  description: "Découvrez la mission et la vision de Chackor Organisation, une initiative communautaire à Thiès, Sénégal, et ses pôles d'activités : Café Touba, services digitaux, et plus.",
+};
 
 export default function AboutPage() {
   return (

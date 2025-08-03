@@ -6,6 +6,7 @@ import { CartProvider } from '@/context/CartProvider';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://chackor-shop.com'), // Replace with your actual domain
   title: {
     template: '%s | Chackor Shop',
     default: 'Chackor Shop - Café Touba Artisanal et Services',
@@ -15,13 +16,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Chackor Shop - Café Touba Artisanal et Services',
     description: 'La boutique officielle pour le café Touba de Chackor et les services associés.',
-    url: 'https://chackor-shop.com', // Replace with actual domain
+    url: '/',
     siteName: 'Chackor Shop',
     images: [
       {
-        url: '/images/og-image.png', // Main OG image
+        url: '/images/og-image.png',
         width: 1200,
         height: 630,
+        alt: 'Bannière Chackor Shop',
       },
     ],
     locale: 'fr_SN',
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Chackor Shop - Café Touba Artisanal et Services',
     description: 'Découvrez le Café Touba authentique de Chackor Organisation.',
-    images: ['/images/og-image.png'], // Twitter card image
+    images: ['/images/og-image.png'],
   },
   robots: {
     index: true,
@@ -44,6 +46,10 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  icons: {
+    icon: '/images/logo/favicon.ico',
+    apple: '/images/logo/apple-touch-icon.png',
+  }
 };
 
 export default function RootLayout({
@@ -57,7 +63,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
-        <link rel="icon" href="/images/logo/favicon.ico" sizes="any" />
       </head>
       <body className="font-body antialiased">
         <CartProvider>
