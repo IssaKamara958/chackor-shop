@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Phone, User } from "lucide-react";
+import { Mail, Phone, User, Globe, Facebook } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,6 +9,14 @@ export const metadata: Metadata = {
     title: 'À Propos de Chackor Organisation | Chackor Shop',
     description: 'Tout savoir sur Chackor Organisation, notre mission et nos services.',
     url: '/about',
+    images: [
+        {
+          url: '/images/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: 'À propos de Chackor Shop',
+        },
+      ],
   },
 };
 
@@ -64,9 +72,13 @@ export default function AboutPage() {
           <CardTitle className="font-headline">Contactez-nous</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-            <div className="flex items-center gap-4">
-                <User className="h-5 w-5 text-primary" />
-                <span>Issa Kamara, Développeur Web Front-End</span>
+            <div className="flex items-start gap-4">
+                <User className="h-5 w-5 text-primary mt-1" />
+                <div>
+                  <strong>Issa Kamara</strong>
+                  <p className="text-sm text-muted-foreground">Entrepreneur, Développeur Web & Fondateur de Chackor</p>
+                  <p className="text-sm text-muted-foreground">Parcelles Assainies unité 1, Thiès, Sénégal</p>
+                </div>
             </div>
             <div className="flex items-center gap-4">
                 <Phone className="h-5 w-5 text-primary" />
@@ -75,6 +87,14 @@ export default function AboutPage() {
             <div className="flex items-center gap-4">
                 <Mail className="h-5 w-5 text-primary" />
                 <a href="mailto:issakamara958@gmail.com" className="hover:underline">issakamara958@gmail.com</a>
+            </div>
+            <div className="flex items-center gap-4">
+                <Globe className="h-5 w-5 text-primary" />
+                <a href="https://issa-portfeuil.netlify.app/" target="_blank" rel="noopener noreferrer" className="hover:underline">issa-portfeuil.netlify.app</a>
+            </div>
+            <div className="flex items-center gap-4">
+                <Facebook className="h-5 w-5 text-primary" />
+                <a href="https://www.facebook.com/profile.php?id=100074472115745" target="_blank" rel="noopener noreferrer" className="hover:underline">Facebook</a>
             </div>
         </CardContent>
       </Card>
