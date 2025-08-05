@@ -23,8 +23,8 @@ export default function Home() {
       </section>
       <Separator />
       <section>
-         <h2 className="text-3xl font-bold text-center font-headline">Un Événement à Célébrer ?</h2>
-        <p className="text-center text-muted-foreground mt-2 mb-8">Commandez notre service café pour vos baptêmes, magals, et autres occasions.</p>
+         <h2 className="text-3xl font-bold text-center font-headline">Un Service Café Complet Pour Vos Événements</h2>
+        <p className="text-center text-muted-foreground mt-2 mb-8">De la fourniture du café à la préparation et au service de vos invités, nous nous occupons de tout !</p>
         <EventServiceOrder />
       </section>
     </div>

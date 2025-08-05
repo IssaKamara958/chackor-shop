@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -11,7 +11,7 @@ import { useCart } from '@/context/CartProvider';
 import type { Product } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 
-const EVENT_PRICE_PER_UNIT = 10000; // Price per "pot" of coffee, for example
+const EVENT_PRICE_PER_UNIT = 10000; // Prix par "marmite" de café, incluant le service complet.
 
 export function EventServiceOrder() {
   const [eventType, setEventType] = useState('Baptême');
@@ -33,8 +33,8 @@ export function EventServiceOrder() {
     
     const eventProduct: Product = {
       id: `event-${eventType.toLowerCase()}-${Date.now()}`,
-      name: `Service Événementiel: ${eventType}`,
-      description: `Service café pour ${quantity} unité(s).`,
+      name: `Service Clé en Main: ${eventType}`,
+      description: `Service café complet pour ${quantity} unité(s), incluant fourniture, préparation et service.`,
       price: totalPrice / quantity, // Price per unit
       image: '/images/services/event-service.png',
       slug: 'service-evenementiel',
@@ -51,7 +51,10 @@ export function EventServiceOrder() {
   return (
     <Card className="max-w-2xl mx-auto shadow-lg">
       <CardHeader>
-        <CardTitle className="text-center font-headline">Service Événementiel</CardTitle>
+        <CardTitle className="text-center font-headline">Service Café Clé en Main</CardTitle>
+        <CardDescription className="text-center pt-2">
+            Notre prestation inclut la fourniture du café, sa préparation sur place et le service à vos invités tout au long de votre événement.
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
@@ -81,14 +84,14 @@ export function EventServiceOrder() {
           </div>
         </div>
         <div className="text-center">
-            <p className="text-muted-foreground">Prix total estimé</p>
+            <p className="text-muted-foreground">Prix total pour le service complet</p>
             <p className="text-3xl font-bold text-primary">{totalPrice.toLocaleString('fr-FR')} FCFA</p>
         </div>
       </CardContent>
       <CardFooter>
         <Button className="w-full" size="lg" onClick={handleAddToCart}>
           <ShoppingCart className="mr-2 h-5 w-5" />
-          Ajouter au panier
+          Ajouter la prestation au panier
         </Button>
       </CardFooter>
     </Card>
