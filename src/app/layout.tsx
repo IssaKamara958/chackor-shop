@@ -6,8 +6,8 @@ import { CartProvider } from '@/context/CartProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { Analytics } from "@vercel/analytics/react"
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://chackor-shop.com'), // Replace with your actual domain
+export const metadata: Metadata = { 
+  metadataBase: new URL('https://chackor-shop.netlify.app'), // Replace with your actual domain
   title: {
     template: '%s | Chackor Shop',
     default: 'Chackor Shop - Café Touba Artisanal et Services',
@@ -52,7 +52,11 @@ export const metadata: Metadata = {
     apple: '/images/logo/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
+};
+
+export const viewport = {
   themeColor: '#8C6E4D',
+
 };
 
 export default function RootLayout({
