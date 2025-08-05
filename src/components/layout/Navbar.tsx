@@ -1,14 +1,16 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Image from 'next/image';
 import { Menu } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { CartIcon } from './CartIcon';
 
 export function Navbar() {
   const navLinks = [
+
     { href: '/', label: 'Accueil' },
     { href: '/about', label: 'À propos' },
+ { href: '#localisation', label: 'Localisation' },
   ];
 
   return (
