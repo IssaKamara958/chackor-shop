@@ -1,8 +1,11 @@
 import Link from 'next/link';
-import { Facebook, Mail, Phone, User, Globe } from 'lucide-react';
+import { Facebook, Mail, Phone, User, Globe, MapPin } from 'lucide-react';
+import Image from 'next/image';
 
 // The existing Footer component
 export function Footer() {
+  const mapUrl = "https://www.google.com/maps/search/?api=1&query=Parcelles+Assainies+unité+1,+avenue+Police,+rue+de+la+Mosquée+Idrissa+Gaye,+Thies";
+
   return (
     <footer className="bg-card border-t mt-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -48,13 +51,22 @@ export function Footer() {
           {/* Section for the Google Map */}
           <div className="space-y-4" id="localisation">
             <h3 className="font-bold text-base text-primary font-headline">Localisation</h3>
-            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}> {/* 16:9 aspect ratio */}
-              <iframe
-                src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=Parcelles+Assainies+unité+1,+avenue+Police,+rue+de+la+Mosquée+Idrissa+Gaye,+Thies"
-                title="Localisation de Chackor Organisation"
- className="absolute top-0 left-0 w-full h-full border-0"
-                allowFullScreen=""
-                loading="lazy"></iframe>
+            <div className="relative w-full h-48 overflow-hidden rounded-lg border">
+                <a href={mapUrl} target="_blank" rel="noopener noreferrer" title="Voir sur Google Maps">
+                    <Image
+                        src="https://placehold.co/400x300.png"
+                        alt="Carte de localisation de Chackor Organisation"
+                        fill
+                        className="object-cover transition-transform hover:scale-105"
+                        data-ai-hint="map location"
+                    />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white p-4 text-center hover:bg-black/50 transition-colors">
+                        <div >
+                            <MapPin className="h-8 w-8 mx-auto mb-2" />
+                            <p className="font-semibold">Cliquez pour voir sur Google Maps</p>
+                        </div>
+                    </div>
+                </a>
             </div>
           </div>
         </div>
