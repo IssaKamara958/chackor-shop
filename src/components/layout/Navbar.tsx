@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '@/components/ui/sheet';
 import { CartIcon } from './CartIcon';
 
 export function Navbar() {
@@ -47,6 +47,10 @@ export function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left">
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Menu</SheetTitle>
+                  <SheetDescription>Menu principal de navigation</SheetDescription>
+                </SheetHeader>
                 <div className="flex flex-col gap-6 p-6">
                   <Link href="/" className="flex items-center gap-2 font-bold text-lg font-headline">
                     <Image
