@@ -154,7 +154,7 @@ Paiement: ${orderDetails.paymentMethod}
         <Card className="max-w-2xl mx-auto">
             <CardHeader className="text-center">
                 <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
-                <CardTitle className="text-2xl font-headline mt-4">Commande prête à être finalisée !</CardTitle>
+                <CardTitle className="text-2xl font-headline mt-4">Veuillez poursuivre...</CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-4">
                 <p className="text-muted-foreground">Merci pour votre commande. Veuillez effectuer le paiement si nécessaire, puis téléchargez votre reçu. Nous vous contacterons bientôt.</p>
@@ -246,3 +246,5 @@ Paiement: ${orderDetails.paymentMethod}
     </div>
   );
 }
+
+    
