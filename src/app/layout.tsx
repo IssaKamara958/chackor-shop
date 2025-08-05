@@ -5,6 +5,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CartProvider } from '@/context/CartProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { Analytics } from "@vercel/analytics/react"
+import { VirtualAssistant } from '@/components/layout/VirtualAssistant';
 
 export const metadata: Metadata = { 
   metadataBase: new URL('https://chackor-shop.netlify.app'), // Replace with your actual domain
@@ -101,6 +102,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
+          <VirtualAssistant />
         </CartProvider>
         <Analytics />
       </body>
