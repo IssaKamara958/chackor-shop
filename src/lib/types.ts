@@ -6,6 +6,7 @@ export type Product = {
   image: string;
   slug: string;
   category: 'Café Touba' | 'Service Événementiel';
+  placeholderText?: string;
 };
 
 export type CartItem = {

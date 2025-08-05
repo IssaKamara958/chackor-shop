@@ -21,6 +21,11 @@ export function ProductCard({ product }: ProductCardProps) {
               className="object-cover"
               data-ai-hint="coffee bag"
             />
+            {product.placeholderText && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                <span className="text-white font-bold text-lg">{product.placeholderText}</span>
+              </div>
+            )}
           </div>
         </Link>
       </CardHeader>
