@@ -1,11 +1,10 @@
 "use client";
 
 import React, { createContext, useReducer, useContext, ReactNode, useMemo } from 'react';
-import type { Product, CartItem, Region, REGIONS } from '@/lib/types';
+import type { Product, CartItem, Region } from '@/lib/types';
 
-const VAT_RATE = 0.18;
 const SHIPPING_COST_THIES = 500;
-const SHIPPING_COST_OTHER_REGIONS_RATE = 0.07;
+const SHIPPING_COST_OTHER_REGIONS = 2000;
 
 interface CartState {
   items: CartItem[];
@@ -90,7 +89,6 @@ interface CartContextType extends CartState {
   itemCount: number;
   subtotal: number;
   shippingCost: number;
-  vat: number;
   total: number;
 }
 
@@ -101,15 +99,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const itemCount = useMemo(() => state.items.reduce((sum, item) => sum + item.quantity, 0), [state.items]);
   const subtotal = useMemo(() => state.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0), [state.items]);
+  
   const shippingCost = useMemo(() => {
     if (itemCount === 0) return 0;
     if (state.shippingRegion === 'Thiès') {
       return SHIPPING_COST_THIES;
     }
-    return subtotal * SHIPPING_COST_OTHER_REGIONS_RATE;
+    return SHIPPING_COST_OTHER_REGIONS;
   }, [subtotal, state.shippingRegion, itemCount]);
-  const vat = useMemo(() => subtotal * VAT_RATE, [subtotal]);
-  const total = useMemo(() => subtotal + vat + shippingCost, [subtotal, vat, shippingCost]);
+  
+  const total = useMemo(() => subtotal + shippingCost, [subtotal, shippingCost]);
 
 
   const addItem = (product: Product, quantity: number) => {
@@ -145,7 +144,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         itemCount,
         subtotal,
         shippingCost,
-        vat,
         total,
       }}
     >

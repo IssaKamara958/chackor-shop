@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { REGIONS, Region } from "@/lib/types";
 
 export function CartView() {
-  const { items, itemCount, updateQuantity, removeItem, subtotal, shippingCost, vat, total, shippingRegion, setRegion } = useCart();
+  const { items, itemCount, updateQuantity, removeItem, subtotal, shippingCost, total, shippingRegion, setRegion } = useCart();
 
   if (itemCount === 0) {
     return (
@@ -84,10 +84,6 @@ export function CartView() {
           <div className="flex justify-between">
             <span>Sous-total</span>
             <span>{subtotal.toLocaleString('fr-FR')} FCFA</span>
-          </div>
-          <div className="flex justify-between">
-            <span>TVA (18%)</span>
-            <span>{Math.round(vat).toLocaleString('fr-FR')} FCFA</span>
           </div>
           <div className="flex justify-between">
             <span>Frais de transport</span>
