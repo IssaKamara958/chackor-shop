@@ -4,7 +4,7 @@ import type { Product } from './types';
 export const products: Product[] = [
   {
     id: 'cafe-1kg',
-    name: 'Café Touba - 1kg',
+    name: 'Café Touba Artisanal - 1kg',
     description: 'Un kilogramme de notre café Touba artisanal, pour les vrais amateurs.',
     price: 6500,
     image: '/images/products/1kg.png',
@@ -13,7 +13,7 @@ export const products: Product[] = [
   },
   {
     id: 'cafe-500g',
-    name: 'Café Touba - 500g',
+    name: 'Café Touba Traditionnel - 500g',
     description: 'Un demi-kilo de pur plaisir, parfait pour une consommation régulière.',
     price: 3250,
     image: '/images/products/500g.jpg',
@@ -22,7 +22,7 @@ export const products: Product[] = [
   },
   {
     id: 'cafe-250g',
-    name: 'Café Touba - 250g',
+    name: 'Sachet de Café Touba - 250g',
     description: 'Le format idéal pour découvrir notre café ou pour un cadeau.',
     price: 2300,
     image: '/images/products/250g (2).jpg',
@@ -31,7 +31,7 @@ export const products: Product[] = [
   },
   {
     id: 'cafe-125g',
-    name: 'Café Touba - 125g',
+    name: 'Format Découverte Touba - 125g',
     description: 'Une petite quantité pour une dégustation ou pour vos voyages.',
     price: 1150,
     image: '/images/products/125g.jpg',
@@ -40,7 +40,7 @@ export const products: Product[] = [
   },
    {
     id: 'cafe-75g',
-    name: 'Café Touba - 75g',
+    name: 'Mini Sachet Café Touba - 75g',
     description: 'Le format poche pour un café de qualité partout où vous allez.',
     price: 650,
     image: '/images/products/75g.jpg',
@@ -49,7 +49,7 @@ export const products: Product[] = [
   },
   {
     id: 'cafe-1kg-pack-12',
-    name: 'Café Touba 1kg - Pack de 12',
+    name: 'Pack Pro 1kg - 12 Unités',
     description: 'Pack économique de 12 unités de 1kg.',
     price: 78000,
     image: '/images/products/1kg.png',
@@ -58,7 +58,7 @@ export const products: Product[] = [
   },
   {
     id: 'cafe-500g-pack-12',
-    name: 'Café Touba 500g - Pack de 12',
+    name: 'Lot Familial 500g - 12 Unités',
     description: 'Pack économique de 12 unités de 500g.',
     price: 39000,
     image: '/images/products/500g.jpg',
@@ -67,7 +67,7 @@ export const products: Product[] = [
   },
   {
     id: 'cafe-250g-pack-12',
-    name: 'Café Touba 250g - Pack de 12',
+    name: 'Pack Avantage 250g - 12 Unités',
     description: 'Pack économique de 12 unités de 250g.',
     price: 27600,
     image: '/images/products/250g (2).jpg',
@@ -76,7 +76,7 @@ export const products: Product[] = [
   },
   {
     id: 'cafe-125g-pack-12',
-    name: 'Café Touba 125g - Pack de 12',
+    name: 'Lot Spécial 125g - 12 Unités',
     description: 'Lot spécial de 12 unités de 125g pour les amateurs.',
     price: 13800,
     image: '/images/products/125g.jpg',
@@ -85,7 +85,7 @@ export const products: Product[] = [
   },
   {
     id: 'cafe-75g-pack-12',
-    name: 'Café Touba 75g - Pack de 12',
+    name: 'Pack Nomade 75g - 12 Unités',
     description: '12 petits packs de 75g pour une consommation régulière.',
     price: 7800,
     image: '/images/products/75g.jpg',
