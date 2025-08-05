@@ -15,14 +15,13 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { REGIONS, Region } from '@/lib/types';
 import Link from 'next/link';
-import { CheckCircle, Download, FileText, Smartphone } from 'lucide-react';
+import { CheckCircle, Download, FileText, Smartphone, Send } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const checkoutSchema = z.object({
   name: z.string().min(2, "Le nom est requis"),
   address: z.string().min(5, "L'adresse est requise"),
   phone: z.string().regex(/^[0-9]{9,15}$/, "Numéro de téléphone invalide"),
-  email: z.string().email("Adresse email invalide"),
   region: z.enum(REGIONS, { errorMap: () => ({ message: "Veuillez sélectionner une région." }) }),
   paymentMethod: z.enum(["Wave", "Orange Money", "Comptant"], { errorMap: () => ({ message: "Veuillez sélectionner une méthode de paiement." }) }),
 });
@@ -58,7 +57,6 @@ export function CheckoutForm() {
       name: "",
       address: "",
       phone: "",
-      email: "",
       region: shippingRegion,
       paymentMethod: "Wave",
     },
@@ -77,7 +75,6 @@ Informations Client:
   Nom: ${data.name}
   Adresse: ${data.address}, ${data.region}
   Téléphone: ${data.phone}
-  Email: ${data.email}
 
 Récapitulatif de la Commande:
 -----------------------------------------
@@ -128,22 +125,23 @@ Chackor Shop
   
   if (isOrderConfirmed && orderDetails) {
     const orderText = `
-Nouvelle commande Chackor Shop:
----
-Client: ${orderDetails.name}
-Adresse: ${orderDetails.address}, ${orderDetails.region}
-Téléphone: ${orderDetails.phone}
-Email: ${orderDetails.email}
----
-Produits:
+*Nouvelle commande Chackor Shop:*
+-----------------------------------
+*Client:* ${orderDetails.name}
+*Adresse:* ${orderDetails.address}, ${orderDetails.region}
+*Téléphone:* ${orderDetails.phone}
+-----------------------------------
+*Produits:*
 ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
----
-Sous-total: ${subtotal.toLocaleString('fr-FR')} FCFA
-Transport: ${Math.round(shippingCost).toLocaleString('fr-FR')} FCFA
-Total: ${Math.round(total).toLocaleString('fr-FR')} FCFA
----
-Paiement: ${orderDetails.paymentMethod}
+-----------------------------------
+*Sous-total:* ${subtotal.toLocaleString('fr-FR')} FCFA
+*Transport:* ${Math.round(shippingCost).toLocaleString('fr-FR')} FCFA
+*Total à payer:* ${Math.round(total).toLocaleString('fr-FR')} FCFA
+-----------------------------------
+*Paiement:* ${orderDetails.paymentMethod}
 `;
+
+    const whatsappUrl = `https://wa.me/221776828441?text=${encodeURIComponent(orderText)}`;
 
     const handleNewOrder = () => {
       clearCart();
@@ -156,9 +154,18 @@ Paiement: ${orderDetails.paymentMethod}
                 <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
                 <CardTitle className="text-2xl font-headline mt-4">Veuillez poursuivre...</CardTitle>
             </CardHeader>
-            <CardContent className="text-center space-y-4">
-                <p className="text-muted-foreground">Merci pour votre commande. Veuillez effectuer le paiement si nécessaire, puis téléchargez votre reçu. Nous vous contacterons bientôt.</p>
+            <CardContent className="space-y-6">
+                <p className="text-center text-muted-foreground">Validez votre commande en l'envoyant via WhatsApp. Nous vous contacterons rapidement pour confirmer.</p>
                 
+                <Card className='p-4'>
+                    <CardTitle className='text-lg mb-2'>Récapitulatif de la commande</CardTitle>
+                    <ul className="space-y-1 text-sm text-muted-foreground">{items.map(({ product, quantity }) => (
+                        <li key={product.id} className="flex justify-between items-center"><span>{quantity} x {product.name}</span><span>{(product.price * quantity).toLocaleString('fr-FR')} FCFA</span></li>
+                    ))}</ul>
+                    <Separator className='my-2'/>
+                    <div className="flex justify-between font-bold text-base"><span>Total</span><span>{Math.round(total).toLocaleString('fr-FR')} FCFA</span></div>
+                </Card>
+
                 {(orderDetails.paymentMethod === 'Wave' || orderDetails.paymentMethod === 'Orange Money') && (
                   <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg">
                     <h3 className="font-semibold">Instructions de paiement</h3>
@@ -169,18 +176,20 @@ Paiement: ${orderDetails.paymentMethod}
                 )}
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button onClick={handleDownloadReceipt} size="lg">
+                    <Button asChild size="lg" className='w-full sm:w-auto'>
+                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                            <Send className="mr-2"/> Envoyer via WhatsApp
+                        </a>
+                    </Button>
+                    <Button onClick={handleDownloadReceipt} size="lg" variant="outline" className='w-full sm:w-auto'>
                         <Download className="mr-2"/> Télécharger le reçu
                     </Button>
                 </div>
 
-                <div className='text-xs text-muted-foreground pt-4'>
-                    <p>Après avoir téléchargé votre reçu, vous pouvez passer une nouvelle commande.</p>
-                </div>
             </CardContent>
             <CardFooter>
-                 <Button onClick={handleNewOrder} variant="outline" className="w-full">
-                    Retour à l'accueil et nouvelle commande
+                 <Button onClick={handleNewOrder} variant="ghost" className="w-full text-muted-foreground">
+                    Passer une nouvelle commande
                 </Button>
             </CardFooter>
         </Card>
@@ -200,9 +209,7 @@ Paiement: ${orderDetails.paymentMethod}
                 <FormField control={form.control} name="phone" render={({ field }) => (
                     <FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input placeholder="771234567" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
-                <FormField control={form.control} name="email" render={({ field }) => (
-                    <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="votre@email.com" {...field} /></FormControl><FormMessage /></FormItem>
-                )} />
+
                 <FormField control={form.control} name="region" render={({ field }) => (
                     <FormItem>
                         <FormLabel>Région</FormLabel>
@@ -246,5 +253,3 @@ Paiement: ${orderDetails.paymentMethod}
     </div>
   );
 }
-
-    
