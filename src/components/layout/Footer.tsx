@@ -52,21 +52,16 @@ export function Footer() {
           <div className="space-y-4" id="localisation">
             <h3 className="font-bold text-base text-primary font-headline">Localisation</h3>
             <div className="relative w-full h-48 overflow-hidden rounded-lg border">
-                <a href={mapUrl} target="_blank" rel="noopener noreferrer" title="Voir sur Google Maps">
-                    <Image
-                        src="https://placehold.co/400x300.png"
-                        alt="Carte de localisation de Chackor Organisation"
-                        fill
-                        className="object-cover transition-transform hover:scale-105"
-                        data-ai-hint="map location"
-                    />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white p-4 text-center hover:bg-black/50 transition-colors">
-                        <div >
-                            <MapPin className="h-8 w-8 mx-auto mb-2" />
-                            <p className="font-semibold">Cliquez pour voir sur Google Maps</p>
-                        </div>
-                    </div>
-                </a>
+                <Image
+                    src="https://placehold.co/400x300.png"
+                    alt="Carte de localisation de Chackor Organisation"
+                    fill
+                    className="object-cover"
+                    data-ai-hint="map location"
+                />
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">Bientôt dispo</span>
+                </div>
             </div>
           </div>
         </div>
