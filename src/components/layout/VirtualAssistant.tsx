@@ -4,11 +4,12 @@ import { useState, Suspense, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { MessageSquare, X, Loader } from "lucide-react";
+import { MessageSquare, X } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF, useAnimations } from "@react-three/drei";
 import type { Group } from 'three';
+import { Loader } from "../ui/loader";
 
 const quickLinks = [
     { href: "/#products", label: "Voir les produits" },
