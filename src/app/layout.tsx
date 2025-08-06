@@ -5,19 +5,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CartProvider } from '@/context/CartProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { Analytics } from "@vercel/analytics/react"
-import dynamic from 'next/dynamic';
-import { Skeleton } from '@/components/ui/skeleton';
-
-// Lazy load the VirtualAssistant to improve initial page load performance
-const VirtualAssistant = dynamic(
-  () => import('@/components/layout/VirtualAssistant').then(mod => mod.VirtualAssistant),
-  { 
-    ssr: false,
-    loading: () => (
-      <Skeleton className="fixed bottom-6 right-6 h-16 w-16 rounded-full" />
-    )
-  }
-);
+import { ClientOnlyAssistantLoader } from '@/components/layout/ClientOnlyAssistantLoader';
 
 
 export const metadata: Metadata = { 
@@ -115,7 +103,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
-          <VirtualAssistant />
+          <ClientOnlyAssistantLoader />
         </CartProvider>
         <Analytics />
       </body>
