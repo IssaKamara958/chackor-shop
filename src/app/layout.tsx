@@ -4,8 +4,6 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { CartProvider } from '@/context/CartProvider';
 import { Toaster } from '@/components/ui/toaster';
-import { Analytics } from "@vercel/analytics/react"
-import { ClientOnlyAssistantLoader } from '@/components/layout/ClientOnlyAssistantLoader';
 
 
 export const metadata: Metadata = { 
@@ -100,12 +98,11 @@ export default function RootLayout({
             <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {children}
             </main>
-            <Footer />
-          </div>
-          <Toaster />
-          <ClientOnlyAssistantLoader />
+            <Footer /> 
+          </div> 
+ <Toaster />
         </CartProvider>
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   );

@@ -25,7 +25,7 @@ export const products: Product[] = [
     name: 'Sachet Saveur Touba - 250g',
     description: 'Le format idéal pour découvrir notre café ou pour un cadeau.',
     price: 2300,
-    image: '/images/products/250g (2).jpg',
+    image: '/images/products/250g.jpg',
     slug: 'cafe-touba-250g',
     category: 'Café Touba',
   },
