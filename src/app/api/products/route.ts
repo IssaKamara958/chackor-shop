@@ -1,16 +1,24 @@
 import { NextResponse } from 'next/server';
-import { products } from '@/lib/products';
+import pool from '@/lib/db';
 
-export const dynamic = 'force-dynamic'; // Ensures the route is always dynamic
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    // In a real application, you would fetch this from a database.
-    // For now, we're returning the static data to simulate a DB call.
+    const connection = await pool.getConnection();
+    const [rows] = await connection.query('SELECT * FROM products');
+    connection.release();
+    
+    // Le SGBD retourne les champs `price` comme des chaînes de caractères,
+    // il faut donc les convertir en nombres.
+    const products = (rows as any[]).map(product => ({
+      ...product,
+      price: parseFloat(product.price)
+    }));
+
     return NextResponse.json(products);
   } catch (error) {
-    console.error("Failed to fetch products:", error);
-    // Ensure you return a proper error response
+    console.error("Failed to fetch products from DB:", error);
     return new NextResponse(
       JSON.stringify({ message: "Internal Server Error" }),
       { 
