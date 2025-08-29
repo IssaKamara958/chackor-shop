@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -50,7 +51,13 @@ export function CartView() {
                 <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(product.id, quantity - 1)}>
                   <Minus className="h-4 w-4" />
                 </Button>
-                <Input type="number" value={quantity} readOnly className="h-8 w-14 text-center" />
+                <Input
+                  type="number"
+                  value={quantity}
+                  onChange={(e) => updateQuantity(product.id, parseInt(e.target.value) || 1)}
+                  className="h-8 w-14 text-center"
+                  min="1"
+                />
                 <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(product.id, quantity + 1)}>
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -85,10 +92,12 @@ export function CartView() {
             <span>Sous-total</span>
             <span>{subtotal.toLocaleString('fr-FR')} FCFA</span>
           </div>
-          <div className="flex justify-between">
-            <span>Frais de transport</span>
-            <span>{Math.round(shippingCost).toLocaleString('fr-FR')} FCFA</span>
-          </div>
+          {itemCount > 0 && (
+             <div className="flex justify-between">
+                <span>Frais de transport</span>
+                <span>{Math.round(shippingCost).toLocaleString('fr-FR')} FCFA</span>
+            </div>
+          )}
           <Separator />
           <div className="flex justify-between font-bold text-lg">
             <span>Total</span>

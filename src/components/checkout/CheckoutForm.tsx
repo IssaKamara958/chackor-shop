@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -15,7 +16,7 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { REGIONS, Region } from '@/lib/types';
 import Link from 'next/link';
-import { CheckCircle, Download, FileText, Smartphone, Send } from 'lucide-react';
+import { CheckCircle, Download, Smartphone, Send, Wallet, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const checkoutSchema = z.object({
@@ -27,8 +28,9 @@ const checkoutSchema = z.object({
 });
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+type PaymentMethod = CheckoutFormValues['paymentMethod'];
 
-function PaymentInstructions({ method }: { method: "Wave" | "Orange Money" | "Comptant" }) {
+function PaymentInstructions({ method }: { method?: PaymentMethod }) {
     if (method === 'Wave' || method === 'Orange Money') {
         return (
             <div className="mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg text-sm">
@@ -44,6 +46,12 @@ function PaymentInstructions({ method }: { method: "Wave" | "Orange Money" | "Co
     }
     return null;
 }
+
+const paymentMethods: { id: PaymentMethod, label: string, icon: React.ReactNode }[] = [
+    { id: "Wave", label: "Wave", icon: <CreditCard className="mr-2" /> },
+    { id: "Orange Money", label: "Orange Money", icon: <Smartphone className="mr-2" /> },
+    { id: "Comptant", label: "Comptant (à la livraison)", icon: <Wallet className="mr-2" /> },
+]
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -62,7 +70,7 @@ export function CheckoutForm() {
     },
   });
 
-  const paymentMethod = useWatch({ control: form.control, name: 'paymentMethod' });
+  const watchedPaymentMethod = useWatch({ control: form.control, name: 'paymentMethod' });
 
   function generateReceiptContent(data: CheckoutFormValues) {
     return `
@@ -111,11 +119,9 @@ Chackor Shop
     URL.revokeObjectURL(url);
   };
 
-
   function onSubmit(data: CheckoutFormValues) {
     setOrderDetails(data);
     setIsOrderConfirmed(true);
-    // Do not clear cart here, so receipt can be generated
   }
 
   if (items.length === 0 && !isOrderConfirmed) {
@@ -225,12 +231,15 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
                         <FormLabel>Méthode de paiement</FormLabel>
                         <FormControl>
                             <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-2">
-                                <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="Wave" /></FormControl><FormLabel className="font-normal">Wave</FormLabel></FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="Orange Money" /></FormControl><FormLabel className="font-normal">Orange Money</FormLabel></FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0"><FormControl><RadioGroupItem value="Comptant" /></FormControl><FormLabel className="font-normal">Comptant (à la livraison/au local)</FormLabel></FormItem>
+                                {paymentMethods.map(method => (
+                                     <FormItem key={method.id} className="flex items-center space-x-3 space-y-0">
+                                        <FormControl><RadioGroupItem value={method.id} /></FormControl>
+                                        <FormLabel className="font-normal flex items-center">{method.icon} {method.label}</FormLabel>
+                                    </FormItem>
+                                ))}
                             </RadioGroup>
                         </FormControl>
-                         <PaymentInstructions method={paymentMethod} />
+                         <PaymentInstructions method={watchedPaymentMethod} />
                         <FormMessage />
                     </FormItem>
                 )} />
@@ -245,7 +254,7 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
                 ))}</ul>
                 <Separator/>
                 <div className="flex justify-between"><span>Sous-total</span><span>{subtotal.toLocaleString('fr-FR')} FCFA</span></div>
-                <div className="flex justify-between"><span>Transport</span><span>{Math.round(shippingCost).toLocaleString('fr-FR')} FCFA</span></div>
+                {itemCount > 0 && <div className="flex justify-between"><span>Transport</span><span>{Math.round(shippingCost).toLocaleString('fr-FR')} FCFA</span></div>}
                 <Separator/>
                 <div className="flex justify-between font-bold text-lg"><span>Total</span><span>{Math.round(total).toLocaleString('fr-FR')} FCFA</span></div>
             </CardContent>
