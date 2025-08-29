@@ -1,16 +1,36 @@
 import { Hero } from '@/components/home/Hero';
 import { ProductList } from '@/components/home/ProductList';
 import { EventServiceOrder } from '@/components/home/EventServiceOrder';
-import { products } from '@/lib/products';
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
+import type { Product } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Accueil | Chackor Shop - Café Touba et Services',
   description: 'Bienvenue sur Chackor Shop. Achetez notre café Touba artisanal fabriqué à Thiès, Sénégal. Découvrez aussi nos services événementiels pour toutes vos occasions.',
 };
 
-export default function Home() {
+async function getProducts(): Promise<Product[]> {
+  // In a real app, you'd fetch this from your database.
+  // We'll use the static file for now, served via an API route.
+  // The NEXT_PUBLIC_URL environment variable should be set in your deployment environment.
+  const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:9002';
+  try {
+    const res = await fetch(`${baseUrl}/api/products`, { cache: 'no-store' }); // Use no-store to ensure dynamic data
+    if (!res.ok) {
+      console.error('Failed to fetch products:', await res.text());
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return []; // Return empty array on error
+  }
+}
+
+
+export default async function Home() {
+  const products = await getProducts();
   const cafeProducts = products.filter(p => p.category === 'Café Touba');
 
   return (

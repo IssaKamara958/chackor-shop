@@ -1,8 +1,9 @@
 
-import { products } from "@/lib/products";
+import { products as staticProducts } from "@/lib/products";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from 'next';
 import { ProductDetailsClient } from "@/components/products/ProductDetailsClient";
+import type { Product } from "@/lib/types";
 
 type ProductPageProps = {
   params: {
@@ -10,11 +11,28 @@ type ProductPageProps = {
   };
 };
 
+async function getProducts(): Promise<Product[]> {
+  const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:9002';
+  try {
+      const res = await fetch(`${baseUrl}/api/products`, { cache: 'no-store' });
+      if (!res.ok) return [];
+      return res.json();
+  } catch (error) {
+      console.error("Failed to fetch products for metadata", error);
+      return [];
+  }
+}
+
+async function getProduct(slug: string): Promise<Product | undefined> {
+    const products = await getProducts();
+    return products.find((p) => p.slug === slug);
+}
+
 export async function generateMetadata(
   { params }: ProductPageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const product = products.find((p) => p.slug === params.slug);
+  const product = await getProduct(params.slug);
 
   if (!product) {
     return {
@@ -52,14 +70,16 @@ export async function generateMetadata(
   }
 }
 
-export function generateStaticParams() {
-  return products.map((product) => ({
+export async function generateStaticParams() {
+  // Although we fetch dynamically, we can still use the static data 
+  // at build time to generate static paths.
+  return staticProducts.map((product) => ({
     slug: product.slug,
   }));
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = products.find((p) => p.slug === params.slug);
+export default async function ProductPage({ params }: ProductPageProps) {
+  const product = await getProduct(params.slug);
 
   if (!product) {
     notFound();
