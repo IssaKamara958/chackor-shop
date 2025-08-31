@@ -13,10 +13,12 @@ export async function GET() {
         }
     });
 
-    // La conversion de type est nécessaire car Next.js ne sait pas sérialiser le type Decimal de Prisma.
+    // Conversion des types non-sériálisables (Decimal, Date) en types compatibles JSON (Number, String)
     const serializableProducts = products.map(product => ({
       ...product,
       price: Number(product.price), // Convertit le type Decimal en Number
+      createdAt: product.createdAt.toISOString(), // Convertit la date en string
+      updatedAt: product.updatedAt.toISOString(), // Convertit la date en string
     }));
 
     return NextResponse.json(serializableProducts);
