@@ -25,6 +25,7 @@ Ce projet est construit avec une stack technologique moderne et performante :
 -   **Langage** : [TypeScript](https://www.typescriptlang.org/)
 -   **Styling** : [Tailwind CSS](https://tailwindcss.com/)
 -   **Composants UI** : [Shadcn/ui](https://ui.shadcn.com/)
+-   **Base de Données** : [MySQL](https://www.mysql.com/) avec l'ORM [Prisma](https://www.prisma.io/)
 -   **Rendu 3D** : [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) & [Drei](https://github.com/pmndrs/drei)
 -   **Gestion de Formulaires** : [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
 -   **Gestion d'État (Panier)** : React Context API & `useReducer`
@@ -40,6 +41,7 @@ Suivez ces étapes pour lancer le projet en local.
 
 -   [Node.js](https://nodejs.org/) (version 18 ou supérieure)
 -   `pnpm` (recommandé), `npm` ou `yarn`
+-   Un serveur MySQL fonctionnel (local ou distant)
 
 ### Installation
 
@@ -55,6 +57,23 @@ Suivez ces étapes pour lancer le projet en local.
     # ou avec pnpm
     pnpm install
     ```
+
+3.  **Configuration de la base de données** :
+    -   Créez un fichier `.env.local` à la racine du projet en copiant `.env.example`.
+        ```bash
+        cp .env.example .env.local
+        ```
+    -   Modifiez le fichier `.env.local` pour y mettre votre chaîne de connexion MySQL.
+        ```
+        DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+        ```
+    -   Synchronisez le schéma Prisma avec votre base de données. Cela créera les tables nécessaires.
+        ```bash
+        npx prisma db push
+        ```
+
+4.  **(Optionnel) Ajouter des données de test** :
+    Vous pouvez ajouter des produits à votre table `products` via un client MySQL comme phpMyAdmin pour voir le contenu s'afficher.
 
 ### Lancement du projet
 
@@ -76,6 +95,8 @@ Le projet suit la convention `App Router` de Next.js pour une organisation clair
 
 ```
 chackor-shop/
+├── prisma/                 # Schéma et migrations de la base de données
+│   └── schema.prisma
 ├── src/
 │   ├── app/                  # Routes de l'application (pages)
 │   │   ├── (default)/        # Layout principal et pages
@@ -93,13 +114,15 @@ chackor-shop/
 │   ├── hooks/                # Hooks personnalisés (ex: use-toast)
 │   │
 │   ├── lib/                  # Utilitaires, définitions de types, données
-│   │   ├── products.ts       # Données statiques des produits
+│   │   ├── db.ts             # Connexion Prisma à la DB
+│   │   ├── products.ts       # Logique de récupération des produits
 │   │   ├── types.ts          # Définitions TypeScript
 │   │   └── utils.ts          # Fonctions utilitaires
 │   │
 │   └── public/               # Fichiers statiques (images, polices, etc.)
 │       └── images/
 │
+├── .env.example              # Fichier d'exemple pour les variables d'environnement
 ├── package.json              # Dépendances et scripts
 └── tailwind.config.ts        # Configuration de Tailwind CSS
 ```
@@ -108,7 +131,7 @@ chackor-shop/
 
 ## 🌐 Déploiement
 
-Le moyen le plus simple de déployer cette application Next.js est d'utiliser la [plateforme Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
+Le moyen le plus simple de déployer cette application Next.js est d'utiliser la [plateforme Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme). N'oubliez pas de configurer les variables d'environnement (comme `DATABASE_URL`) dans les paramètres de votre projet sur Vercel.
 
 ---
 
