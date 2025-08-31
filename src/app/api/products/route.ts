@@ -13,8 +13,7 @@ export async function GET() {
         }
     });
 
-    // La conversion de type n'est plus nécessaire car Prisma retourne des types corrects (ex: Decimal pour le prix)
-    // Mais Next.js a besoin que les types complexes comme Decimal soient sérialisables.
+    // La conversion de type est nécessaire car Next.js ne sait pas sérialiser le type Decimal de Prisma.
     const serializableProducts = products.map(product => ({
       ...product,
       price: Number(product.price), // Convertit le type Decimal en Number
