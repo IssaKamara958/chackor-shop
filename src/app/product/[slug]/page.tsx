@@ -1,5 +1,5 @@
 
-import { products as staticProducts } from "@/lib/products";
+import { staticProducts, getProducts } from "@/lib/products";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from 'next';
 import { ProductDetailsClient } from "@/components/products/ProductDetailsClient";
@@ -10,18 +10,6 @@ type ProductPageProps = {
     slug: string;
   };
 };
-
-async function getProducts(): Promise<Product[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:9002';
-  try {
-      const res = await fetch(`${baseUrl}/api/products`, { cache: 'no-store' });
-      if (!res.ok) return [];
-      return res.json();
-  } catch (error) {
-      console.error("Failed to fetch products for metadata", error);
-      return [];
-  }
-}
 
 async function getProduct(slug: string): Promise<Product | undefined> {
     const products = await getProducts();
@@ -119,4 +107,3 @@ export default async function ProductPage({ params }: ProductPageProps) {
     </>
   );
 }
-

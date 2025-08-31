@@ -1,7 +1,8 @@
 
 import type { Product } from './types';
+import { prisma } from '@/lib/db';
 
-export const products: Product[] = [
+export const staticProducts: Product[] = [
   {
     id: 'cafe-1kg',
     name: 'L\'Authentique Café Touba - 1kg',
@@ -39,3 +40,27 @@ export const products: Product[] = [
     category: 'Café Touba',
   },
 ];
+
+
+/**
+ * Fetches all products directly from the database using Prisma.
+ * This is the new recommended way for Server Components.
+ */
+export async function getProducts(): Promise<Product[]> {
+    try {
+        const productsFromDb = await prisma.product.findMany({
+            orderBy: { name: 'asc' },
+        });
+
+        // Convert Prisma's Decimal and Date types to JSON-compatible types
+        return productsFromDb.map(product => ({
+            ...product,
+            price: Number(product.price),
+            // No need to convert dates if they are not used directly in client components
+            // that require string props. For simplicity, we pass them as is.
+        }));
+    } catch (error) {
+        console.error("Failed to fetch products from DB:", error);
+        return []; // Return an empty array in case of an error
+    }
+}
