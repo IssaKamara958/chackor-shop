@@ -1,3 +1,4 @@
+
 # 🛍️ Chackor Shop - Boutique en Ligne
 
 Bienvenue sur le code source de **Chackor Shop**, la boutique en ligne officielle de **Chackor Organisation**, une initiative communautaire basée à Thiès, au Sénégal. Ce projet a été conçu pour offrir une expérience d'achat moderne, rapide et intuitive, tout en mettant en valeur les produits artisanaux et les services de l'organisation.
@@ -10,10 +11,8 @@ Bienvenue sur le code source de **Chackor Shop**, la boutique en ligne officiell
 -   **☕ Catalogue de Produits** : Présentation claire des produits "Achakourou Café Touba" avec des pages de détail dédiées.
 -   **🛒 Panier d'Achat Interactif** : Gestion des quantités, mise à jour instantanée du sous-total, et calcul des frais de livraison en fonction de la région.
 -   **✅ Processus de Commande Simplifié** : Un formulaire de paiement épuré qui finalise la commande via une notification WhatsApp pour un contact direct et efficace.
--   **🤖 Assistant Virtuel 3D** : "Ablaye Sène", un guide animé qui accueille les visiteurs et les aide à naviguer sur le site.
--   **ℹ️ Page "À Propos"** : Présentation détaillée de la mission, de la vision et des quatre pôles d'activités de Chackor Organisation.
 -   **📱 Conception Entièrement Responsive** : Une interface optimisée pour une expérience utilisateur fluide sur mobile, tablette et ordinateur.
--   **🚀 Performance Optimisée** : Construite avec les meilleures pratiques de Next.js, incluant le rendu côté serveur (SSR) et le chargement différé (lazy loading) des composants lourds.
+-   **🚀 Performance Optimisée** : Construite avec les meilleures pratiques de Next.js, incluant le rendu côté serveur (SSR) et la connexion directe à la base de données via Prisma.
 
 ---
 
@@ -25,10 +24,9 @@ Ce projet est construit avec une stack technologique moderne et performante :
 -   **Langage** : [TypeScript](https://www.typescriptlang.org/)
 -   **Styling** : [Tailwind CSS](https://tailwindcss.com/)
 -   **Composants UI** : [Shadcn/ui](https://ui.shadcn.com/)
--   **Base de Données** : [MySQL](https://www.mysql.com/) avec l'ORM [Prisma](https://www.prisma.io/)
--   **Rendu 3D** : [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) & [Drei](https://github.com/pmndrs/drei)
+-   **Base de Données** : [MySQL](https://www.mysql.com/) avec l'ORM [Prisma](https://www.prisma.io/) pour des requêtes sécurisées et typées.
 -   **Gestion de Formulaires** : [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
--   **Gestion d'État (Panier)** : React Context API & `useReducer`
+-   **Gestion d'État (Panier)** : React Context API, `useReducer` & `localStorage` pour la persistance.
 -   **Déploiement** : Prêt pour [Vercel](https://vercel.com/) ou [Netlify](https://www.netlify.com/)
 
 ---
@@ -40,7 +38,7 @@ Suivez ces étapes pour lancer le projet en local.
 ### Prérequis
 
 -   [Node.js](https://nodejs.org/) (version 18 ou supérieure)
--   `pnpm` (recommandé), `npm` ou `yarn`
+-   `npm` ou `pnpm`
 -   Un serveur MySQL fonctionnel (local ou distant)
 
 ### Installation
@@ -54,8 +52,6 @@ Suivez ces étapes pour lancer le projet en local.
 2.  **Installez les dépendances** :
     ```bash
     npm install
-    # ou avec pnpm
-    pnpm install
     ```
 
 3.  **Configuration de la base de données** :
@@ -65,15 +61,16 @@ Suivez ces étapes pour lancer le projet en local.
         ```
     -   Modifiez le fichier `.env.local` pour y mettre votre chaîne de connexion MySQL.
         ```
-        DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+        # Exemple: mysql://USER:PASSWORD@HOST:PORT/DATABASE
+        DATABASE_URL="mysql://..."
         ```
-    -   Synchronisez le schéma Prisma avec votre base de données. Cela créera les tables nécessaires.
+    -   Synchronisez le schéma Prisma avec votre base de données. Cela créera les tables si elles n'existent pas.
         ```bash
         npx prisma db push
         ```
 
 4.  **(Optionnel) Ajouter des données de test** :
-    Vous pouvez ajouter des produits à votre table `products` via un client MySQL comme phpMyAdmin pour voir le contenu s'afficher.
+    Vous pouvez utiliser un client MySQL comme TablePlus ou DBeaver pour ajouter des produits à votre table `Product`.
 
 ### Lancement du projet
 
@@ -81,8 +78,6 @@ Exécutez la commande suivante pour démarrer le serveur de développement :
 
 ```bash
 npm run dev
-# ou avec pnpm
-pnpm dev
 ```
 
 L'application sera alors disponible à l'adresse `http://localhost:9002`.
@@ -99,29 +94,12 @@ chackor-shop/
 │   └── schema.prisma
 ├── src/
 │   ├── app/                  # Routes de l'application (pages)
-│   │   ├── (default)/        # Layout principal et pages
-│   │   ├── api/              # (Optionnel) Routes API
-│   │   └── layout.tsx        # Layout racine
-│   │
 │   ├── components/           # Composants React réutilisables
-│   │   ├── home/             # Composants spécifiques à la page d'accueil
-│   │   ├── layout/           # Composants de mise en page (Navbar, Footer...)
-│   │   ├── products/         # Composants liés aux produits
-│   │   └── ui/               # Composants Shadcn/ui
-│   │
 │   ├── context/              # Contexte React (ex: CartProvider)
-│   │
-│   ├── hooks/                # Hooks personnalisés (ex: use-toast)
-│   │
-│   ├── lib/                  # Utilitaires, définitions de types, données
-│   │   ├── db.ts             # Connexion Prisma à la DB
-│   │   ├── products.ts       # Logique de récupération des produits
-│   │   ├── types.ts          # Définitions TypeScript
-│   │   └── utils.ts          # Fonctions utilitaires
-│   │
-│   └── public/               # Fichiers statiques (images, polices, etc.)
-│       └── images/
+│   ├── lib/                  # Utilitaires, connexion DB (Prisma)
+│   └── types/                # Définitions TypeScript
 │
+├── .env.local                # Fichier pour les secrets (ignoré par Git)
 ├── .env.example              # Fichier d'exemple pour les variables d'environnement
 ├── package.json              # Dépendances et scripts
 └── tailwind.config.ts        # Configuration de Tailwind CSS
@@ -131,19 +109,19 @@ chackor-shop/
 
 ## 🌐 Déploiement
 
-Le moyen le plus simple de déployer cette application Next.js est d'utiliser la [plateforme Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme). N'oubliez pas de configurer les variables d'environnement (comme `DATABASE_URL`) dans les paramètres de votre projet sur Vercel.
+Le moyen le plus simple de déployer cette application est d'utiliser la [plateforme Vercel](https://vercel.com/new).
+
+**Instructions importantes pour Vercel :**
+
+1.  **Variables d'environnement** : Assurez-vous de configurer la variable d'environnement `DATABASE_URL` dans les paramètres de votre projet sur Vercel.
+2.  **Commande de Build** : La commande `npm run build` inclut maintenant `prisma generate` pour s'assurer que le client Prisma est bien généré pour l'environnement de production.
+3.  **Migrations** : Avant de déployer, assurez-vous d'avoir exécuté `npx prisma db push` sur votre base de données de production.
 
 ---
 
 ## À Propos de Chackor Organisation
 
 **Chackor Organisation** est un hub d'initiatives visant à promouvoir l'innovation locale, le développement des compétences et l'autonomisation économique à Thiès, Sénégal.
-
-### Nos Pôles d'Activités :
--   **Achakourou Café Touba**: Café artisanal torréfié localement.
--   **Achakourou Digital Services**: Création de sites web, développement et prototypage UX/UI.
--   **Achakourou Bana Bana**: Commerce agricole pour connecter producteurs et marchés.
--   **Achakourou Consulting**: Conseil en gestion, digitalisation et stratégie.
 
 ### Contact
 -   **Fondateur**: Issa Kamara

@@ -12,7 +12,8 @@ import { useCart } from '@/context/CartProvider';
 import type { Product } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 
-const EVENT_PRICE_PER_UNIT = 10000; // Prix par "marmite" de café, incluant le service complet.
+// This constant now defines the price PER UNIT (per "marmite")
+const EVENT_PRICE_PER_UNIT = 10000;
 
 export function EventServiceOrder() {
   const [eventType, setEventType] = useState('Baptême');
@@ -20,7 +21,9 @@ export function EventServiceOrder() {
   const { addItem } = useCart();
   const { toast } = useToast();
 
-  const totalPrice = quantity * EVENT_PRICE_PER_UNIT;
+  // The total price is now calculated for display purposes only.
+  // The price added to the cart will be the price per unit.
+  const displayTotalPrice = quantity * EVENT_PRICE_PER_UNIT;
 
   const handleAddToCart = () => {
     if (quantity < 1) {
@@ -32,23 +35,28 @@ export function EventServiceOrder() {
         return;
     }
     
-    // The product sent to the cart needs to be serializable
+    // SECURITY FIX:
+    // We create a product with a FIXED unit price. The cart will be responsible for calculating the total.
+    // This prevents the client from manipulating the price sent to the cart.
     const eventProduct: Product = {
       id: `event-${eventType.toLowerCase()}-${Date.now()}`,
       name: `Service Clé en Main: ${eventType}`,
-      description: `Service café complet pour ${quantity} unité(s), incluant fourniture, préparation et service.`,
-      price: totalPrice / quantity, // Price per unit
+      description: `Service café complet, incluant fourniture, préparation et service. Le prix est par unité (ex: marmite).`,
+      // CRITICAL: The price is the fixed unit price, not the client-calculated total.
+      price: EVENT_PRICE_PER_UNIT,
       image: '/images/services/event-service.png',
       slug: 'service-evenementiel',
       category: 'Service Événementiel',
-      createdAt: new Date().toISOString() as any, // Convert to string for serialization
-      updatedAt: new Date().toISOString() as any, // Convert to string for serialization
+      createdAt: new Date().toISOString() as any,
+      updatedAt: new Date().toISOString() as any,
     };
     
+    // We add the product and the desired quantity. The cart context will handle the total calculation safely.
     addItem(eventProduct, quantity);
+
     toast({
       title: "Service ajouté au panier",
-      description: `Le service pour votre ${eventType} a été ajouté.`,
+      description: `${quantity} x prestation pour votre ${eventType} a été ajoutée.`,
     });
   };
 
@@ -89,7 +97,7 @@ export function EventServiceOrder() {
         </div>
         <div className="text-center">
             <p className="text-muted-foreground">Prix total pour le service complet</p>
-            <p className="text-3xl font-bold text-primary">{totalPrice.toLocaleString('fr-FR')} FCFA</p>
+            <p className="text-3xl font-bold text-primary">{displayTotalPrice.toLocaleString('fr-FR')} FCFA</p>
         </div>
       </CardContent>
       <CardFooter>
@@ -101,5 +109,3 @@ export function EventServiceOrder() {
     </Card>
   );
 }
-
-    
