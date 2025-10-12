@@ -1,11 +1,14 @@
 
-import type { Product as PrismaProduct } from '@prisma/client';
 
-// We overwrite the `price` type from Decimal to number
-// and ensure createdAt/updatedAt are strings for client-side serialization.
-// On the server, they can be Date objects, but they must be converted before being passed to a client component.
-export type Product = Omit<PrismaProduct, 'price' | 'createdAt' | 'updatedAt'> & {
+// We define the Product type manually now that Prisma is removed.
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
   price: number;
+  image: string;
+  slug: string;
+  category: string;
   createdAt: string | Date;
   updatedAt: string | Date;
   placeholderText?: string;
@@ -19,5 +22,3 @@ export type CartItem = {
 export const REGIONS = ['Thiès', 'Dakar', 'Diourbel', 'Fatick', 'Kaffrine', 'Kaolack', 'Kédougou', 'Kolda', 'Louga', 'Matam', 'Saint-Louis', 'Sédhiou', 'Tambacounda', 'Ziguinchor'] as const;
 
 export type Region = typeof REGIONS[number];
-
-    

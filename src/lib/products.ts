@@ -1,8 +1,8 @@
 
 import type { Product } from '@/types';
-import { prisma } from '@/lib/db';
 
-export const staticProducts: Omit<Product, 'createdAt' | 'updatedAt'>[] = [
+// Using static data instead of Prisma to avoid environment compatibility issues.
+export const staticProducts: Product[] = [
   {
     id: 'cafe-1kg',
     name: 'L\'Authentique Café Touba - 1kg',
@@ -11,6 +11,8 @@ export const staticProducts: Omit<Product, 'createdAt' | 'updatedAt'>[] = [
     image: '/images/products/1kg.png',
     slug: 'cafe-touba-1kg',
     category: 'Café Touba',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'cafe-500g',
@@ -20,6 +22,8 @@ export const staticProducts: Omit<Product, 'createdAt' | 'updatedAt'>[] = [
     image: '/images/products/500g.jpg',
     slug: 'cafe-touba-500g',
     category: 'Café Touba',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'cafe-250g',
@@ -29,6 +33,8 @@ export const staticProducts: Omit<Product, 'createdAt' | 'updatedAt'>[] = [
     image: '/images/products/250g.jpg',
     slug: 'cafe-touba-250g',
     category: 'Café Touba',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'cafe-125g',
@@ -38,29 +44,18 @@ export const staticProducts: Omit<Product, 'createdAt' | 'updatedAt'>[] = [
     image: '/images/products/125g.jpg',
     slug: 'cafe-touba-125g',
     category: 'Café Touba',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
 ];
 
 
 /**
- * Fetches all products directly from the database using Prisma.
- * This is the new recommended way for Server Components.
+ * Fetches all products from the static list.
+ * This is now a simple async function returning a promise.
  */
 export async function getProducts(): Promise<Product[]> {
-    try {
-        const productsFromDb = await prisma.product.findMany({
-            orderBy: { name: 'asc' },
-        });
-
-        // Convert Prisma's Decimal and Date types to JSON-compatible types
-        return productsFromDb.map(product => ({
-            ...product,
-            price: Number(product.price),
-            createdAt: product.createdAt, // Keep as Date object for server
-            updatedAt: product.updatedAt, // Keep as Date object for server
-        }));
-    } catch (error: any) {
-        console.error("Failed to fetch products from DB:", error.message ? error.message : "An unknown error occurred");
-        return []; // Return an empty array in case of an error
-    }
+    // We wrap the static data in a Promise to mimic an async operation
+    // like fetching from a database or an API.
+    return Promise.resolve(staticProducts);
 }
