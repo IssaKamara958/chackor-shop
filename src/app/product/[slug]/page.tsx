@@ -15,14 +15,7 @@ type ProductPageProps = {
 async function getProduct(slug: string): Promise<Product | undefined> {
     const products = await getProducts(); // In a real app, you'd fetch one product
     const product = products.find((p) => p.slug === slug);
-    if (!product) return undefined;
-
-    // Convert Date objects to string to be serializable for the client component
-    return {
-        ...product,
-        createdAt: product.createdAt.toISOString(),
-        updatedAt: product.updatedAt.toISOString(),
-    } as unknown as Product;
+    return product;
 }
 
 

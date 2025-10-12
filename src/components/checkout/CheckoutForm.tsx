@@ -14,7 +14,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { REGIONS, Region } from '@/types';
+import { REGIONS, Region } from '@/lib/types';
 import Link from 'next/link';
 import { CheckCircle, Download, Smartphone, Send, Wallet, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
