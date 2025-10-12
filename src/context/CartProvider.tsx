@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useReducer, useContext, ReactNode, useMemo, useEffect } from 'react';
+import React, { createContext, useReducer, useContext, ReactNode, useMemo, useEffect, useCallback } from 'react';
 import type { Product, CartItem, Region } from '@/types';
 
 const SHIPPING_COST_THIES = 500;
@@ -78,14 +78,13 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         }
     }
     case 'CLEAR_CART':
-      return { ...state, items: [] };
+      return { ...state, items: [], shippingRegion: initialState.shippingRegion };
     default:
       return state;
   }
 };
 
 interface CartContextType extends CartState {
-  dispatch: React.Dispatch<CartAction>;
   addItem: (product: Product, quantity: number) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -101,8 +100,9 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [isHydrated, setIsHydrated] = React.useState(false);
 
-  // Rehydrate state from localStorage on initial load
+  // Rehydrate state from localStorage on initial client-side load
   useEffect(() => {
     try {
       const savedState = localStorage.getItem(CART_STORAGE_KEY);
@@ -111,17 +111,21 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error("Failed to load cart from localStorage", error);
+    } finally {
+        setIsHydrated(true);
     }
   }, []);
 
   // Persist state to localStorage on any change
   useEffect(() => {
-    try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state));
-    } catch (error) {
-      console.error("Failed to save cart to localStorage", error);
+    if(isHydrated) {
+        try {
+          localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state));
+        } catch (error) {
+          console.error("Failed to save cart to localStorage", error);
+        }
     }
-  }, [state]);
+  }, [state, isHydrated]);
 
 
   const itemCount = useMemo(() => state.items.reduce((sum, item) => sum + item.quantity, 0), [state.items]);
@@ -138,42 +142,42 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const total = useMemo(() => subtotal + shippingCost, [subtotal, shippingCost]);
 
 
-  const addItem = (product: Product, quantity: number) => {
+  const addItem = useCallback((product: Product, quantity: number) => {
     dispatch({ type: 'ADD_ITEM', payload: { product, quantity } });
-  };
+  }, []);
 
-  const removeItem = (productId: string) => {
+  const removeItem = useCallback((productId: string) => {
     dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
-  };
+  }, []);
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, quantity } });
-  };
+  }, []);
   
-  const setRegion = (region: Region) => {
+  const setRegion = useCallback((region: Region) => {
       dispatch({ type: 'SET_REGION', payload: { region } });
-  }
+  }, [])
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     dispatch({ type: 'CLEAR_CART' });
-  };
+  }, []);
+
+  const value = useMemo(() => ({
+    ...state,
+    addItem,
+    removeItem,
+    updateQuantity,
+    setRegion,
+    clearCart,
+    itemCount,
+    subtotal,
+    shippingCost,
+    total,
+  }), [state, addItem, removeItem, updateQuantity, setRegion, clearCart, itemCount, subtotal, shippingCost, total]);
+
 
   return (
-    <CartContext.Provider
-      value={{
-        ...state,
-        dispatch,
-        addItem,
-        removeItem,
-        updateQuantity,
-        setRegion,
-        clearCart,
-        itemCount,
-        subtotal,
-        shippingCost,
-        total,
-      }}
-    >
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );
@@ -186,3 +190,5 @@ export const useCart = (): CartContextType => {
   }
   return context;
 };
+
+    

@@ -32,6 +32,7 @@ export function EventServiceOrder() {
         return;
     }
     
+    // The product sent to the cart needs to be serializable
     const eventProduct: Product = {
       id: `event-${eventType.toLowerCase()}-${Date.now()}`,
       name: `Service Clé en Main: ${eventType}`,
@@ -40,8 +41,8 @@ export function EventServiceOrder() {
       image: '/images/services/event-service.png',
       slug: 'service-evenementiel',
       category: 'Service Événementiel',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString() as any, // Convert to string for serialization
+      updatedAt: new Date().toISOString() as any, // Convert to string for serialization
     };
     
     addItem(eventProduct, quantity);
@@ -100,3 +101,5 @@ export function EventServiceOrder() {
     </Card>
   );
 }
+
+    

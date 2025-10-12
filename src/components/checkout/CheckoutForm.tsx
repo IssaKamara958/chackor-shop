@@ -59,7 +59,7 @@ export function CheckoutForm() {
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
   const [orderDetails, setOrderDetails] = useState<CheckoutFormValues | null>(null);
 
-  // Redirect if cart is empty
+  // Redirect if cart is empty on client-side
   useEffect(() => {
     if (itemCount === 0 && !isOrderConfirmed) {
       router.replace('/');
@@ -205,7 +205,7 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
     )
   }
 
-  // Hide form until we've confirmed the cart is not empty
+  // Hide form until we've confirmed the cart is not empty client-side
   if (itemCount === 0) {
     return null; 
   }
@@ -271,3 +271,5 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
     </div>
   );
 }
+
+    
