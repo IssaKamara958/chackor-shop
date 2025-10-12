@@ -1,68 +1,43 @@
-
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
-/.pnp
-.pnp.js
 
-# testing
-/coverage
-
-# next.js
+# Next.js build output
 /.next/
 /out/
-build
 
-# misc
-.DS_Store
-*.pem
+# Environment variables
+.env.local
+.env.*.local
 
-# debug
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 
-# local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env
+# System files
+.DS_Store
 
-# vercel
-.vercel
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
 
-# prisma
-/prisma/client
-/prisma/migrations
+# SWC cache
+.swc
 
-# my files
-/database
-*~
-*#
-*swp
-*.bak
-*.old
-*.orig
-*log
+# Editor directories and files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# My files
-/database
-*~
-*#
-*swp
-*.bak
-*.old
-*.orig
-*log
+# Firebase
+apphosting.yaml
 
-# My files
-/database
-*~
-*#
-*swp
-*.bak
-*.old
-*.orig
-*log
+# Presentation file
+presentation.html
