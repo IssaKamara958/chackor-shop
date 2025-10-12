@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     siteName: 'Chackor Shop',
     images: [
       {
-        url: '/chackor_logo.jpg', // Updated Path
+        url: '/images/logo/chackor_logo.jpg', // Updated Path
         width: 1200,
         height: 630,
         alt: 'Bannière Chackor Shop',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Chackor Shop - Café Touba Artisanal et Services',
     description: 'Découvrez le Café Touba authentique de Chackor Organisation.',
-    images: ['/chackor_logo.jpg'], // Updated Path
+    images: ['/images/logo/chackor_logo.jpg'], // Updated Path
   },
   robots: {
     index: true,
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/chackor_logo.jpg', // Updated Path
-    apple: '/chackor_logo.jpg', // Updated Path
+    icon: '/images/logo/chackor_logo.jpg', // Updated Path
+    apple: '/images/logo/chackor_logo.jpg', // Updated Path
   },
   manifest: '/manifest.json',
 };
@@ -77,7 +77,7 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Chackor Shop",
               "url": "https://chackor-shop.netlify.app",
-              "logo": "https://chackor-shop.netlify.app/chackor_logo.jpg", // Updated Path
+              "logo": "https://chackor-shop.netlify.app/images/logo/chackor_logo.jpg", // Updated Path
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+221-77-682-84-41",
