@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/images/logo/favicon.ico',
-    apple: '/images/logo/apple-touch-icon.png',
+    icon: '/images/logo/chackor_logo.jpg',
+    apple: '/images/logo/chackor_logo.jpg',
   },
   manifest: '/manifest.json',
 };
@@ -77,7 +77,7 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Chackor Shop",
               "url": "https://chackor-shop.com",
-              "logo": "https://chackor-shop.com/images/logo/ch-logo.jpg",
+              "logo": "https://chackor-shop.com/images/logo/chackor_logo.jpg",
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+221-77-682-84-41",
