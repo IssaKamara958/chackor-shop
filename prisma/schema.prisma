@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider   = "prisma-client-js"
-  engineType = "wasm"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -21,5 +20,4 @@ model Product {
   category    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  inventory   Int      @default(0) // Added for stock management
 }
