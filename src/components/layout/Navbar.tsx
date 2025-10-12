@@ -23,6 +23,7 @@ export function Navbar() {
               width={40}
               height={40}
               className="rounded-full"
+              style={{ height: 'auto' }}
               priority
             />
           <span>Chackor Shop</span>
@@ -59,6 +60,7 @@ export function Navbar() {
                       width={40}
                       height={40}
                        className="rounded-full"
+                       style={{ height: 'auto' }}
                     />
                     <span>Chackor Shop</span>
                   </Link>
