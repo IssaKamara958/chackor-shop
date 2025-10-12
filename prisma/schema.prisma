@@ -2,9 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider      = "prisma-client-js"
-  // Force Prisma to use the OpenSSL 3.0.x compatible binary
-  binaryTargets = ["native", "debian-openssl-3.0.x"]
+  provider        = "prisma-client-js"
+  // Use the wasm engine to avoid OS-specific library issues like OpenSSL
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -41,21 +41,20 @@ model Order {
   id          String      @id @default(cuid())
   userId      String
   user        User        @relation(fields: [userId], references: [id])
-  amount      Decimal     @db.Decimal(10, 2)
-  status      String      @default("pending") // e.g., pending, paid, shipped, delivered
-  customerName String
-  customerAddress String
-  customerPhone String
+  total       Decimal     @db.Decimal(10, 2)
+  status      String      @default("PENDING") // e.g., PENDING, PAID, SHIPPED, DELIVERED
+  customerInfo Json
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   items       OrderItem[]
 }
 
 model OrderItem {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   orderId   String
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id])
   productId String
   quantity  Int
-  price     Decimal @db.Decimal(10, 2) // Price at the time of purchase
+  price     Decimal  @db.Decimal(10, 2) // Price at the time of purchase
+  createdAt DateTime @default(now())
 }
