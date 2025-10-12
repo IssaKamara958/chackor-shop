@@ -9,6 +9,7 @@ export function Hero() {
         style={{ backgroundImage: "url('/images/products/banner.jpg')" }}
         role="presentation"
         aria-hidden="true"
+        data-ai-hint="coffee beans"
       ></div>
       <div className="container mx-auto px-4 relative z-10 text-white">
         <h1 className="text-4xl md:text-5xl font-extrabold font-headline tracking-tight drop-shadow-lg">

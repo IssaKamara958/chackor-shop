@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     url: '/about',
     images: [
         {
-          url: '/images/og-image.png',
+          url: '/chackor_logo.jpg',
           width: 1200,
           height: 630,
           alt: 'À propos de Chackor Shop',

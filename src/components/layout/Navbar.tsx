@@ -18,7 +18,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg font-headline">
            <Image
-              src="/images/logo/chackor_logo.jpg"
+              src="/chackor_logo.jpg" // Updated Path
               alt="Chackor Shop Logo"
               width={40}
               height={40}
@@ -54,7 +54,7 @@ export function Navbar() {
                 <div className="flex flex-col gap-6 p-6">
                   <Link href="/" className="flex items-center gap-2 font-bold text-lg font-headline">
                     <Image
-                      src="/images/logo/chackor_logo.jpg"
+                      src="/chackor_logo.jpg" // Updated Path
                       alt="Chackor Shop Logo"
                       width={40}
                       height={40}
