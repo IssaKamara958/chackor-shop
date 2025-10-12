@@ -1,11 +1,10 @@
-
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  // The following line is required for Prisma to work in some environments
-  binaryTargets   = ["native", "debian-openssl-3.0.x"]
+  provider = "prisma-client-js"
+  // Use the wasm engine to avoid system dependencies like OpenSSL
+  engineType = "wasm"
 }
 
 datasource db {
@@ -14,13 +13,13 @@ datasource db {
 }
 
 model Product {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
-  slug        String   @unique
-  description String   @db.Text
-  price       Decimal  @db.Decimal(10, 2)
+  description String?   @db.Text
+  price       Decimal   @db.Decimal(10, 2)
   image       String
+  slug        String    @unique
   category    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
