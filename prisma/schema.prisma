@@ -1,10 +1,11 @@
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider      = "prisma-client-js"
-  // Use the OpenSSL 3.0.x compatible binary
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider        = "prisma-client-js"
+  // The following line is required for Prisma to work in some environments
+  binaryTargets   = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -15,50 +16,11 @@ datasource db {
 model Product {
   id          String   @id @default(cuid())
   name        String
+  slug        String   @unique
   description String   @db.Text
   price       Decimal  @db.Decimal(10, 2)
   image       String
-  slug        String   @unique
   category    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  inventory   Int      @default(0)
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  hashedPassword String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  orders        Order[]
-}
-
-model Order {
-  id            String      @id @default(cuid())
-  userId        String
-  user          User        @relation(fields: [userId], references: [id])
-  amount        Decimal     @db.Decimal(10, 2)
-  status        String      @default("pending") // e.g., pending, paid, shipped, delivered
-  customerName  String
-  customerAddress String
-  customerPhone String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  items         OrderItem[]
-}
-
-model OrderItem {
-  id        String  @id @default(cuid())
-  orderId   String
-  order     Order   @relation(fields: [orderId], references: [id])
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-  quantity  Int
-  price     Decimal @db.Decimal(10, 2) // Price at the time of purchase
-
-  @@unique([orderId, productId])
 }

@@ -1,11 +1,12 @@
-export type Product = {
-  id: string;
-  name: string;
-  description: string;
+
+import type { Product as PrismaProduct } from '@prisma/client';
+
+// We overwrite the `price` type from Decimal to number
+// and ensure createdAt/updatedAt are Date objects.
+export type Product = Omit<PrismaProduct, 'price'> & {
   price: number;
-  image: string;
-  slug: string;
-  category: 'Café Touba' | 'Service Événementiel';
+  createdAt: Date;
+  updatedAt: Date;
   placeholderText?: string;
 };
 

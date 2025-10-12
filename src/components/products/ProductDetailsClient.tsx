@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AddToCartButton } from "@/components/products/AddToCartButton";

@@ -1,8 +1,8 @@
 
-import type { Product } from './types';
+import type { Product } from '@/types';
 import { prisma } from '@/lib/db';
 
-export const staticProducts: Product[] = [
+export const staticProducts: Omit<Product, 'createdAt' | 'updatedAt'>[] = [
   {
     id: 'cafe-1kg',
     name: 'L\'Authentique Café Touba - 1kg',
@@ -56,8 +56,8 @@ export async function getProducts(): Promise<Product[]> {
         return productsFromDb.map(product => ({
             ...product,
             price: Number(product.price),
-            // No need to convert dates if they are not used directly in client components
-            // that require string props. For simplicity, we pass them as is.
+            createdAt: product.createdAt, // Keep as Date object for server
+            updatedAt: product.updatedAt, // Keep as Date object for server
         }));
     } catch (error) {
         console.error("Failed to fetch products from DB:", error);

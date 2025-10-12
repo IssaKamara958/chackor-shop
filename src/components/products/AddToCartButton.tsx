@@ -4,7 +4,7 @@
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartProvider";
 import { useToast } from "@/hooks/use-toast";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/types";
 import { ShoppingCart } from "lucide-react";
 
 type AddToCartButtonProps = {

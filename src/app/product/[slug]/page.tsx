@@ -1,9 +1,9 @@
 
-import { staticProducts, getProducts } from "@/lib/products";
+import { getProducts } from "@/lib/products";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from 'next';
 import { ProductDetailsClient } from "@/components/products/ProductDetailsClient";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/types";
 
 type ProductPageProps = {
   params: {
@@ -11,15 +11,26 @@ type ProductPageProps = {
   };
 };
 
+// This function now fetches a single product by its slug
 async function getProduct(slug: string): Promise<Product | undefined> {
-    const products = await getProducts();
-    return products.find((p) => p.slug === slug);
+    const products = await getProducts(); // In a real app, you'd fetch one product
+    const product = products.find((p) => p.slug === slug);
+    if (!product) return undefined;
+
+    // Convert Date objects to string to be serializable for the client component
+    return {
+        ...product,
+        createdAt: product.createdAt.toISOString(),
+        updatedAt: product.updatedAt.toISOString(),
+    } as unknown as Product;
 }
+
 
 export async function generateMetadata(
   { params }: ProductPageProps,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  // We fetch again here, but Next.js automatically de-duplicates fetch requests
   const product = await getProduct(params.slug);
 
   if (!product) {
@@ -59,9 +70,8 @@ export async function generateMetadata(
 }
 
 export async function generateStaticParams() {
-  // Although we fetch dynamically, we can still use the static data 
-  // at build time to generate static paths.
-  return staticProducts.map((product) => ({
+  const products = await getProducts();
+  return products.map((product) => ({
     slug: product.slug,
   }));
 }

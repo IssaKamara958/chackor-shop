@@ -1,4 +1,5 @@
-import type { Product } from "@/lib/types";
+
+import type { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";

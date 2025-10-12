@@ -1,10 +1,12 @@
+
 "use client";
 
-import React, { createContext, useReducer, useContext, ReactNode, useMemo } from 'react';
-import type { Product, CartItem, Region } from '@/lib/types';
+import React, { createContext, useReducer, useContext, ReactNode, useMemo, useEffect } from 'react';
+import type { Product, CartItem, Region } from '@/types';
 
 const SHIPPING_COST_THIES = 500;
 const SHIPPING_COST_OTHER_REGIONS = 2000;
+const CART_STORAGE_KEY = 'chackorShopCart';
 
 interface CartState {
   items: CartItem[];
@@ -12,6 +14,7 @@ interface CartState {
 }
 
 type CartAction =
+  | { type: 'REHYDRATE_CART'; payload: CartState }
   | { type: 'ADD_ITEM'; payload: { product: Product; quantity: number } }
   | { type: 'UPDATE_QUANTITY'; payload: { productId: string; quantity: number } }
   | { type: 'REMOVE_ITEM'; payload: { productId: string } }
@@ -25,6 +28,8 @@ const initialState: CartState = {
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
+    case 'REHYDRATE_CART':
+      return action.payload;
     case 'ADD_ITEM': {
       const existingItem = state.items.find(
         (item) => item.product.id === action.payload.product.id
@@ -96,6 +101,28 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+
+  // Rehydrate state from localStorage on initial load
+  useEffect(() => {
+    try {
+      const savedState = localStorage.getItem(CART_STORAGE_KEY);
+      if (savedState) {
+        dispatch({ type: 'REHYDRATE_CART', payload: JSON.parse(savedState) });
+      }
+    } catch (error) {
+      console.error("Failed to load cart from localStorage", error);
+    }
+  }, []);
+
+  // Persist state to localStorage on any change
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+      console.error("Failed to save cart to localStorage", error);
+    }
+  }, [state]);
+
 
   const itemCount = useMemo(() => state.items.reduce((sum, item) => sum + item.quantity, 0), [state.items]);
   const subtotal = useMemo(() => state.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0), [state.items]);

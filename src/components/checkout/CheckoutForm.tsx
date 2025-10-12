@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from "@/context/CartProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { REGIONS, Region } from '@/lib/types';
+import { REGIONS, Region } from '@/types';
 import Link from 'next/link';
 import { CheckCircle, Download, Smartphone, Send, Wallet, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -58,6 +58,14 @@ export function CheckoutForm() {
   const { items, itemCount, subtotal, shippingCost, total, shippingRegion, clearCart } = useCart();
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
   const [orderDetails, setOrderDetails] = useState<CheckoutFormValues | null>(null);
+
+  // Redirect if cart is empty
+  useEffect(() => {
+    if (itemCount === 0 && !isOrderConfirmed) {
+      router.replace('/');
+    }
+  }, [itemCount, isOrderConfirmed, router]);
+
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -122,11 +130,6 @@ Chackor Shop
   function onSubmit(data: CheckoutFormValues) {
     setOrderDetails(data);
     setIsOrderConfirmed(true);
-  }
-
-  if (items.length === 0 && !isOrderConfirmed) {
-     router.push('/');
-     return null;
   }
   
   if (isOrderConfirmed && orderDetails) {
@@ -201,6 +204,12 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
         </Card>
     )
   }
+
+  // Hide form until we've confirmed the cart is not empty
+  if (itemCount === 0) {
+    return null; 
+  }
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">

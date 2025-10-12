@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -8,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/CartProvider';
-import type { Product } from '@/lib/types';
+import type { Product } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 
 const EVENT_PRICE_PER_UNIT = 10000; // Prix par "marmite" de café, incluant le service complet.
@@ -39,6 +40,8 @@ export function EventServiceOrder() {
       image: '/images/services/event-service.png',
       slug: 'service-evenementiel',
       category: 'Service Événementiel',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     
     addItem(eventProduct, quantity);
