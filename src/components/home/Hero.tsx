@@ -12,15 +12,15 @@ export function Hero() {
       ></div>
       <div className="container mx-auto px-4 relative z-10 text-white">
         <h1 className="text-4xl md:text-5xl font-extrabold font-headline tracking-tight drop-shadow-lg">
-          Bienvenue chez Chackor Shop
+          Bienvenue chez Chackor<br/><span className="text-amber-400">Shop</span>
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-lg drop-shadow-lg">
-          Découvrez la saveur authentique de notre café Touba et les services de Chackor Organisation.
+          La boutique officielle de Chackor Organisation.
         </p>
         <div className="mt-8">
           <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
             <Link href="#products">
-              Commander Maintenant
+              Voir les produits
             </Link>
           </Button>
         </div>
