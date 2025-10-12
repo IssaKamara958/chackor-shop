@@ -11,7 +11,7 @@ import { Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { REGIONS, Region } from "@/types";
+import { REGIONS, Region } from "@/lib/types";
 
 export function CartView() {
   const { items, itemCount, updateQuantity, removeItem, subtotal, shippingCost, total, shippingRegion, setRegion } = useCart();
