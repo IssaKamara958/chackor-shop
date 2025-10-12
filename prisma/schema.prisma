@@ -2,7 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Use wasm to avoid system dependency issues like with OpenSSL
+  engineType    = "wasm"
 }
 
 datasource db {
@@ -13,7 +15,7 @@ datasource db {
 model Product {
   id          String   @id @default(cuid())
   name        String
-  description String?  @db.Text
+  description String   @db.Text
   price       Decimal  @db.Decimal(10, 2)
   image       String
   slug        String   @unique
