@@ -63,12 +63,37 @@ L'application sera alors disponible à l'adresse `http://localhost:9002`.
 
 ---
 
+## 💾 Mettre à jour le dépôt GitHub
+
+Après avoir fait des modifications, utilisez les commandes suivantes pour les envoyer sur votre dépôt GitHub :
+
+1.  **Ajoutez tous les fichiers modifiés** :
+    ```bash
+    git add .
+    ```
+
+2.  **Créez un "commit"** (un instantané de vos changements) avec un message descriptif :
+    ```bash
+    git commit -m "Décrivez brièvement vos changements ici"
+    ```
+
+3.  **Poussez les changements** vers GitHub (en supposant que votre branche principale s'appelle `main`) :
+    ```bash
+    git push origin main
+    ```
+
+---
+
 ## 📂 Structure du Projet
 
 Le projet suit la convention `App Router` de Next.js pour une organisation claire et basée sur les routes.
 
 ```
 chackor-shop/
+├── public/               # Fichiers statiques (images, logos)
+│   └── images/
+│       └── logo/
+│           └── chackor_logo.jpg
 ├── src/
 │   ├── app/                  # Routes de l'application (pages)
 │   ├── components/           # Composants React réutilisables
@@ -76,6 +101,7 @@ chackor-shop/
 │   ├── lib/                  # Utilitaires, gestion des données produits
 │   └── types/                # Définitions TypeScript
 │
+├── .gitignore                # Fichiers à ignorer par Git
 ├── package.json              # Dépendances et scripts
 └── tailwind.config.ts        # Configuration de Tailwind CSS
 ```
@@ -84,7 +110,7 @@ chackor-shop/
 
 ## 🌐 Déploiement
 
-Le moyen le plus simple de déployer cette application est d'utiliser la [plateforme Vercel](https://vercel.com/new). Le projet est configuré pour un déploiement "plug-and-play" sans configuration supplémentaire.
+Le moyen le plus simple de déployer cette application est d'utiliser la [plateforme Vercel](https://vercel.com/new) ou Netlify. Le projet est configuré pour un déploiement "plug-and-play" sans configuration supplémentaire.
 
 ---
 
