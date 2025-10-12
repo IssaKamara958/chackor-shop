@@ -59,8 +59,8 @@ export async function getProducts(): Promise<Product[]> {
             createdAt: product.createdAt, // Keep as Date object for server
             updatedAt: product.updatedAt, // Keep as Date object for server
         }));
-    } catch (error) {
-        console.error("Failed to fetch products from DB:", error);
+    } catch (error: any) {
+        console.error("Failed to fetch products from DB:", error.message ? error.message : "An unknown error occurred");
         return []; // Return an empty array in case of an error
     }
 }
