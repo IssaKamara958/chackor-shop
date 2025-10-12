@@ -77,9 +77,9 @@ Après avoir fait des modifications, utilisez les commandes suivantes pour les e
     git commit -m "Décrivez brièvement vos changements ici"
     ```
 
-3.  **Poussez les changements** vers GitHub (en supposant que votre branche principale s'appelle `main`) :
+3.  **Poussez les changements** vers GitHub (en supposant que votre branche principale s'appelle `master`) :
     ```bash
-    git push origin main
+    git push origin master
     ```
 
 ---
