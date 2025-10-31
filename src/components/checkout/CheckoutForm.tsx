@@ -156,6 +156,10 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
       clearCart();
       router.push('/');
     }
+    
+    const handleSendOrder = () => {
+      clearCart();
+    }
 
     return (
         <Card className="max-w-2xl mx-auto">
@@ -186,7 +190,7 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button asChild size="lg" className='w-full sm:w-auto'>
-                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" onClick={handleSendOrder}>
                             <Send className="mr-2"/> Envoyer via WhatsApp
                         </a>
                     </Button>
