@@ -137,22 +137,17 @@ Chackor Shop
     URL.revokeObjectURL(url);
   };
 
-  // This function now just saves the order details and clears the cart.
   function onSubmit(data: CheckoutFormValues) {
-    // 1. Capture all necessary cart data before clearing it
     setConfirmedOrder({
       customer: data,
-      items: [...items], // Create a copy of the items array
+      items: [...items],
       subtotal,
       shippingCost,
       total,
     });
-    
-    // 2. Clear the cart. This will be reflected on the next render.
     clearCart();
   }
   
-  // If an order has been confirmed, show the success screen.
   if (confirmedOrder) {
     const orderText = `
 *Nouvelle commande Chackor Shop:*
@@ -174,7 +169,6 @@ ${confirmedOrder.items.map(item => `- ${item.quantity}x ${item.product.name}`).j
     const whatsappUrl = `https://wa.me/221776828441?text=${encodeURIComponent(orderText)}`;
 
     const handleNewOrder = () => {
-      // No need to clear cart, already done. Just redirect.
       router.push('/');
     }
 
@@ -226,7 +220,6 @@ ${confirmedOrder.items.map(item => `- ${item.quantity}x ${item.product.name}`).j
     )
   }
 
-  // Hide form until we've confirmed the cart is not empty client-side
   if (itemCount === 0) {
     return null; 
   }
