@@ -22,3 +22,5 @@ export type CartItem = {
 export const REGIONS = ['Thiès', 'Dakar', 'Diourbel', 'Fatick', 'Kaffrine', 'Kaolack', 'Kédougou', 'Kolda', 'Louga', 'Matam', 'Saint-Louis', 'Sédhiou', 'Tambacounda', 'Ziguinchor'] as const;
 
 export type Region = typeof REGIONS[number];
+
+    

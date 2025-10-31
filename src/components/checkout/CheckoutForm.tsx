@@ -14,7 +14,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { REGIONS, Region } from '@/types';
+import { REGIONS, Region, CartItem } from '@/types';
 import Link from 'next/link';
 import { CheckCircle, Download, Smartphone, Send, Wallet, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -29,6 +29,15 @@ const checkoutSchema = z.object({
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 type PaymentMethod = CheckoutFormValues['paymentMethod'];
+
+// Interface for the confirmed order details, now separate from the cart
+interface ConfirmedOrder {
+    customer: CheckoutFormValues;
+    items: CartItem[];
+    subtotal: number;
+    shippingCost: number;
+    total: number;
+}
 
 function PaymentInstructions({ method }: { method?: PaymentMethod }) {
     if (method === 'Wave' || method === 'Orange Money') {
@@ -56,15 +65,16 @@ const paymentMethods: { id: PaymentMethod, label: string, icon: React.ReactNode 
 export function CheckoutForm() {
   const router = useRouter();
   const { items, itemCount, subtotal, shippingCost, total, shippingRegion, clearCart } = useCart();
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
-  const [orderDetails, setOrderDetails] = useState<CheckoutFormValues | null>(null);
+  
+  // State to hold the finalized order details AFTER validation
+  const [confirmedOrder, setConfirmedOrder] = useState<ConfirmedOrder | null>(null);
 
-  // Redirect if cart is empty on client-side
+  // Redirect if cart is empty and no order has been confirmed
   useEffect(() => {
-    if (itemCount === 0 && !isOrderConfirmed) {
+    if (itemCount === 0 && !confirmedOrder) {
       router.replace('/');
     }
-  }, [itemCount, isOrderConfirmed, router]);
+  }, [itemCount, confirmedOrder, router]);
 
 
   const form = useForm<CheckoutFormValues>({
@@ -80,7 +90,7 @@ export function CheckoutForm() {
 
   const watchedPaymentMethod = useWatch({ control: form.control, name: 'paymentMethod' });
 
-  function generateReceiptContent(data: CheckoutFormValues) {
+  function generateReceiptContent(order: ConfirmedOrder) {
     return `
 Reçu de Commande - Chackor Shop
 -----------------------------------------
@@ -88,24 +98,24 @@ Date: ${new Date().toLocaleDateString('fr-FR')}
 Numéro de commande: #${Date.now().toString().slice(-6)}
 
 Informations Client:
-  Nom: ${data.name}
-  Adresse: ${data.address}, ${data.region}
-  Téléphone: ${data.phone}
+  Nom: ${order.customer.name}
+  Adresse: ${order.customer.address}, ${order.customer.region}
+  Téléphone: ${order.customer.phone}
 
 Récapitulatif de la Commande:
 -----------------------------------------
-${items.map(item => `  - ${item.quantity}x ${item.product.name.padEnd(40)} | ${(item.product.price * item.quantity).toLocaleString('fr-FR')} FCFA`).join('\n')}
+${order.items.map(item => `  - ${item.quantity}x ${item.product.name.padEnd(40)} | ${(item.product.price * item.quantity).toLocaleString('fr-FR')} FCFA`).join('\n')}
 
 Détail des coûts:
-  Nombre total d'articles: ${itemCount}
-  Sous-total: ${subtotal.toLocaleString('fr-FR')} FCFA
-  Frais de transport: ${Math.round(shippingCost).toLocaleString('fr-FR')} FCFA
+  Nombre total d'articles: ${order.items.reduce((acc, item) => acc + item.quantity, 0)}
+  Sous-total: ${order.subtotal.toLocaleString('fr-FR')} FCFA
+  Frais de transport: ${Math.round(order.shippingCost).toLocaleString('fr-FR')} FCFA
 -----------------------------------------
-  TOTAL À PAYER: ${Math.round(total).toLocaleString('fr-FR')} FCFA
+  TOTAL PAYÉ: ${Math.round(order.total).toLocaleString('fr-FR')} FCFA
 -----------------------------------------
 
-Méthode de Paiement: ${data.paymentMethod}
-${(data.paymentMethod === 'Wave' || data.paymentMethod === 'Orange Money') ? 'Statut: En attente de paiement au 77 682 84 41' : 'Statut: Paiement à la livraison'}
+Méthode de Paiement: ${order.customer.paymentMethod}
+${(order.customer.paymentMethod === 'Wave' || order.customer.paymentMethod === 'Orange Money') ? 'Statut: En attente de paiement au 77 682 84 41' : 'Statut: Paiement à la livraison'}
 
 Merci pour votre confiance !
 Chackor Shop
@@ -114,8 +124,8 @@ Chackor Shop
   }
 
   const handleDownloadReceipt = () => {
-    if (!orderDetails) return;
-    const receiptContent = generateReceiptContent(orderDetails);
+    if (!confirmedOrder) return;
+    const receiptContent = generateReceiptContent(confirmedOrder);
     const blob = new Blob([receiptContent], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -127,38 +137,45 @@ Chackor Shop
     URL.revokeObjectURL(url);
   };
 
+  // This function now just saves the order details and clears the cart.
   function onSubmit(data: CheckoutFormValues) {
-    setOrderDetails(data);
-    setIsOrderConfirmed(true);
+    // 1. Capture all necessary cart data before clearing it
+    setConfirmedOrder({
+      customer: data,
+      items: [...items], // Create a copy of the items array
+      subtotal,
+      shippingCost,
+      total,
+    });
+    
+    // 2. Clear the cart. This will be reflected on the next render.
+    clearCart();
   }
   
-  if (isOrderConfirmed && orderDetails) {
+  // If an order has been confirmed, show the success screen.
+  if (confirmedOrder) {
     const orderText = `
 *Nouvelle commande Chackor Shop:*
 -----------------------------------
-*Client:* ${orderDetails.name}
-*Adresse:* ${orderDetails.address}, ${orderDetails.region}
-*Téléphone:* ${orderDetails.phone}
+*Client:* ${confirmedOrder.customer.name}
+*Adresse:* ${confirmedOrder.customer.address}, ${confirmedOrder.customer.region}
+*Téléphone:* ${confirmedOrder.customer.phone}
 -----------------------------------
 *Produits:*
-${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
+${confirmedOrder.items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
 -----------------------------------
-*Sous-total:* ${subtotal.toLocaleString('fr-FR')} FCFA
-*Transport:* ${Math.round(shippingCost).toLocaleString('fr-FR')} FCFA
-*Total à payer:* ${Math.round(total).toLocaleString('fr-FR')} FCFA
+*Sous-total:* ${confirmedOrder.subtotal.toLocaleString('fr-FR')} FCFA
+*Transport:* ${Math.round(confirmedOrder.shippingCost).toLocaleString('fr-FR')} FCFA
+*Total à payer:* ${Math.round(confirmedOrder.total).toLocaleString('fr-FR')} FCFA
 -----------------------------------
-*Paiement:* ${orderDetails.paymentMethod}
+*Paiement:* ${confirmedOrder.customer.paymentMethod}
 `;
 
     const whatsappUrl = `https://wa.me/221776828441?text=${encodeURIComponent(orderText)}`;
 
     const handleNewOrder = () => {
-      clearCart();
+      // No need to clear cart, already done. Just redirect.
       router.push('/');
-    }
-    
-    const handleSendOrder = () => {
-      clearCart();
     }
 
     return (
@@ -172,17 +189,17 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
                 
                 <Card className='p-4'>
                     <CardTitle className='text-lg mb-2'>Récapitulatif de la commande</CardTitle>
-                    <ul className="space-y-1 text-sm text-muted-foreground">{items.map(({ product, quantity }) => (
+                    <ul className="space-y-1 text-sm text-muted-foreground">{confirmedOrder.items.map(({ product, quantity }) => (
                         <li key={product.id} className="flex justify-between items-center"><span>{quantity} x {product.name}</span><span>{(product.price * quantity).toLocaleString('fr-FR')} FCFA</span></li>
                     ))}</ul>
                     <Separator className='my-2'/>
-                    <div className="flex justify-between font-bold text-base"><span>Total</span><span>{Math.round(total).toLocaleString('fr-FR')} FCFA</span></div>
+                    <div className="flex justify-between font-bold text-base"><span>Total</span><span>{Math.round(confirmedOrder.total).toLocaleString('fr-FR')} FCFA</span></div>
                 </Card>
 
-                {(orderDetails.paymentMethod === 'Wave' || orderDetails.paymentMethod === 'Orange Money') && (
+                {(confirmedOrder.customer.paymentMethod === 'Wave' || confirmedOrder.customer.paymentMethod === 'Orange Money') && (
                   <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg">
                     <h3 className="font-semibold">Instructions de paiement</h3>
-                    <p>Envoyez le total de <strong className="text-primary">{Math.round(total).toLocaleString('fr-FR')} FCFA</strong> par {orderDetails.paymentMethod} au :</p>
+                    <p>Envoyez le total de <strong className="text-primary">{Math.round(confirmedOrder.total).toLocaleString('fr-FR')} FCFA</strong> par {confirmedOrder.customer.paymentMethod} au :</p>
                     <p className="text-2xl font-bold my-2">77 682 84 41</p>
                     <p className="text-xs text-muted-foreground">Votre commande sera traitée dès réception du paiement.</p>
                   </div>
@@ -190,7 +207,7 @@ ${items.map(item => `- ${item.quantity}x ${item.product.name}`).join('\n')}
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button asChild size="lg" className='w-full sm:w-auto'>
-                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" onClick={handleSendOrder}>
+                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                             <Send className="mr-2"/> Envoyer via WhatsApp
                         </a>
                     </Button>
