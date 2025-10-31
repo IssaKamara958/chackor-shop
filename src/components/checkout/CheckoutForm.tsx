@@ -140,12 +140,12 @@ Chackor Shop
   function onSubmit(data: CheckoutFormValues) {
     setConfirmedOrder({
       customer: data,
-      items: [...items],
+      items: [...items], // Critical: copy items before clearing cart
       subtotal,
       shippingCost,
       total,
     });
-    clearCart();
+    clearCart(); // This now reliably clears the cart state and localStorage
   }
   
   if (confirmedOrder) {
@@ -169,6 +169,7 @@ ${confirmedOrder.items.map(item => `- ${item.quantity}x ${item.product.name}`).j
     const whatsappUrl = `https://wa.me/221776828441?text=${encodeURIComponent(orderText)}`;
 
     const handleNewOrder = () => {
+      // We don't need to clear cart here, it's already done.
       router.push('/');
     }
 
@@ -193,7 +194,7 @@ ${confirmedOrder.items.map(item => `- ${item.quantity}x ${item.product.name}`).j
                 {(confirmedOrder.customer.paymentMethod === 'Wave' || confirmedOrder.customer.paymentMethod === 'Orange Money') && (
                   <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg">
                     <h3 className="font-semibold">Instructions de paiement</h3>
-                    <p>Envoyez le total de <strong className="text-primary">{Math.round(confirmedOrder.total).toLocaleString('fr-FR')} FCFA</strong> par {confirmedOrder.customer.paymentMethod} au :</p>
+                    <p>Pour finaliser, envoyez le total de <strong className="text-primary">{Math.round(confirmedOrder.total).toLocaleString('fr-FR')} FCFA</strong> par {confirmedOrder.customer.paymentMethod} au :</p>
                     <p className="text-2xl font-bold my-2">77 682 84 41</p>
                     <p className="text-xs text-muted-foreground">Votre commande sera traitée dès réception du paiement.</p>
                   </div>
@@ -220,6 +221,7 @@ ${confirmedOrder.items.map(item => `- ${item.quantity}x ${item.product.name}`).j
     )
   }
 
+  // This prevents a flash of the form while redirecting.
   if (itemCount === 0) {
     return null; 
   }
@@ -285,5 +287,3 @@ ${confirmedOrder.items.map(item => `- ${item.quantity}x ${item.product.name}`).j
     </div>
   );
 }
-
-    
