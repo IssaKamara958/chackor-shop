@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Roboto', 'sans-serif'],
+        body: ['"PT Sans"', 'sans-serif'],
         headline: ['"Roboto Slab"', 'serif'],
         code: ['monospace'],
       },
