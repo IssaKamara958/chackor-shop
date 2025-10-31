@@ -11,7 +11,7 @@ Bienvenue sur le code source de **Chackor Shop**, la boutique en ligne officiell
 -   **🛒 Panier d'Achat Interactif & Persistant** : Gestion des quantités, mise à jour instantanée du total, et persistance du panier même après rechargement de la page grâce au `localStorage`.
 -   **✅ Processus de Commande Simplifié** : Un formulaire de paiement épuré qui finalise la commande via une notification WhatsApp pour un contact direct et efficace.
 -   **📱 Conception Entièrement Responsive** : Une interface optimisée pour une expérience utilisateur fluide sur mobile, tablette et ordinateur.
--   **🚀 Performance Optimisée** : Construit avec les meilleures pratiques de Next.js, incluant le rendu côté serveur (SSR) et l'utilisation de données statiques pour des performances maximales.
+-   **🚀 Performance Optimisée** : Construit avec les meilleures pratiques de Next.js, incluant l'optimisation des images avec `next/image` pour des performances maximales.
 
 ---
 
@@ -21,7 +21,7 @@ Ce projet est construit avec une stack technologique moderne et performante :
 
 -   **Framework** : [Next.js](https://nextjs.org/) (App Router)
 -   **Langage** : [TypeScript](https://www.typescriptlang.org/)
--   **Styling** : [Tailwind CSS](https://tailwindcss.com/)
+-   **Styling** : [Tailwind CSS](https://tailwindcss.com/) & polices Google Fonts (Roboto, Roboto Slab)
 -   **Composants UI** : [Shadcn/ui](https://ui.shadcn.com/)
 -   **Gestion de Formulaires** : [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
 -   **Gestion d'État (Panier)** : React Context API, `useReducer` & `localStorage` pour la persistance.
