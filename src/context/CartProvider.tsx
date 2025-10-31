@@ -78,7 +78,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         }
     }
     case 'CLEAR_CART':
-      return { ...state, items: [], shippingRegion: initialState.shippingRegion };
+      return { ...initialState, items: [] }; // Keep region, clear items
     default:
       return state;
   }
@@ -137,30 +137,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return SHIPPING_COST_THIES;
     }
     return SHIPPING_COST_OTHER_REGIONS;
-  }, [subtotal, state.shippingRegion, itemCount]);
+  }, [itemCount, state.shippingRegion]);
   
   const total = useMemo(() => subtotal + shippingCost, [subtotal, shippingCost]);
 
+  const addItem = useCallback((product: Product, quantity: number) => dispatch({ type: 'ADD_ITEM', payload: { product, quantity } }), []);
+  const removeItem = useCallback((productId: string) => dispatch({ type: 'REMOVE_ITEM', payload: { productId } }), []);
+  const updateQuantity = useCallback((productId: string, quantity: number) => dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, quantity } }), []);
+  const setRegion = useCallback((region: Region) => dispatch({ type: 'SET_REGION', payload: { region } }), []);
+  const clearCart = useCallback(() => dispatch({ type: 'CLEAR_CART' }), []);
 
-  const addItem = useCallback((product: Product, quantity: number) => {
-    dispatch({ type: 'ADD_ITEM', payload: { product, quantity } });
-  }, []);
-
-  const removeItem = useCallback((productId: string) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
-  }, []);
-
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
-    dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, quantity } });
-  }, []);
-  
-  const setRegion = useCallback((region: Region) => {
-      dispatch({ type: 'SET_REGION', payload: { region } });
-  }, [])
-
-  const clearCart = useCallback(() => {
-    dispatch({ type: 'CLEAR_CART' });
-  }, []);
 
   const value = useMemo(() => ({
     ...state,
@@ -190,5 +176,3 @@ export const useCart = (): CartContextType => {
   }
   return context;
 };
-
-    

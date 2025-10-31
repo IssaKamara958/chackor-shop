@@ -1,16 +1,20 @@
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 export function Hero() {
   return (
     <section className="relative text-center py-20 rounded-lg bg-card shadow-md overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center brightness-50" 
-        style={{ backgroundImage: "url('/images/products/banner.jpg')" }}
-        role="presentation"
-        aria-hidden="true"
+      <Image
+        src="/images/products/banner.jpg"
+        alt="Bannière de grains de café"
+        fill
+        priority
+        className="object-cover brightness-50"
         data-ai-hint="coffee beans"
-      ></div>
+        sizes="100vw"
+      />
       <div className="container mx-auto px-4 relative z-10 text-white">
         <h1 className="text-4xl md:text-5xl font-extrabold font-headline tracking-tight drop-shadow-lg">
           Bienvenue chez Chackor<br/><span className="text-amber-400">Shop</span>

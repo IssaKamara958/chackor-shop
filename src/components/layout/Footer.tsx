@@ -60,7 +60,7 @@ export function Footer() {
                     allowFullScreen={false}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Carte de localisation de Chackor Organisation"
+                    title="Carte de localisation de Chackor Organisation à Thiès, Sénégal"
                 ></iframe>
             </div>
           </div>
