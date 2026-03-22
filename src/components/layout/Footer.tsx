@@ -44,7 +44,7 @@ export function Footer() {
             <h3 className="font-bold text-base text-primary font-headline">Liens Utiles</h3>
             <ul className="space-y-2">
                 <li><Link href="/about" className="hover:text-primary flex items-center gap-2"><User className="h-4 w-4" />À propos</Link></li>
-                <li><a href="https://issa-portfeuil.netlify.app/" target="_blank" rel="noopener noreferrer" className="hover:text-primary flex items-center gap-2"><Globe className="h-4 w-4" />Portfolio</a></li>
+                <li><a href="https://issa-kamara-portfolio-3d.web.app/" target="_blank" rel="noopener noreferrer" className="hover:text-primary flex items-center gap-2"><Globe className="h-4 w-4" />Portfolio</a></li>
                 <li><a href="https://www.facebook.com/profile.php?id=100074472115745" target="_blank" rel="noopener noreferrer" className="hover:text-primary flex items-center gap-2"><Facebook className="h-4 w-4" />Facebook</a></li>
             </ul>
           </div>
